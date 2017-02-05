@@ -3,10 +3,12 @@ package com.andrewdubs.qrcodescanner;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -29,7 +31,7 @@ public class MainActivity extends Activity implements ZXingScannerView.ResultHan
 
     }
 
-    public void onClick(View v){
+    public void onClickCamera(View v){
 
         checkPermission();
 
@@ -37,6 +39,33 @@ public class MainActivity extends Activity implements ZXingScannerView.ResultHan
         setContentView(mScannerView);
         mScannerView.setResultHandler(this);
         mScannerView.startCamera();
+
+    }
+
+    public void onClickIMEI(View v){
+        //try {
+        TelephonyManager tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+
+            /*if(ContextCompat.checkSelfPermission(getApplicationContext(),
+                    Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED){
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.READ_PHONE_STATE},MY_PERMISSIONS_REQUEST);
+            }
+            if(MY_PERMISSIONS_REQUEST!=0) {*/
+
+        //String phone = tm.getLine1Number();
+
+        CharSequence text = tm.getDeviceId();
+
+        Toast toast = Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG);
+        toast.show();
+       /*     }
+        } catch (Exception e){
+            Log.e("IMEI", "GETTING BETTER INFO ON ERROR", e);
+            Toast toast = Toast.makeText(getApplicationContext(), e.getMessage().toString(),
+                    Toast.LENGTH_LONG);
+            toast.show();
+        }*/
 
     }
 
@@ -73,7 +102,7 @@ public class MainActivity extends Activity implements ZXingScannerView.ResultHan
                     REQUEST_CAMERA);
 
         }
-        return;
+
 
     }
 

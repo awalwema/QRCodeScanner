@@ -7,6 +7,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Scan QR Code"
-        android:onClick="onClick"/>
+        android:onClick="onClickCamera"
+        android:id="@+id/camera" />
+
+    <Button
+        android:text="Show IMEI"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="onClickIMEI"
+        android:id="@+id/IMEI" />
 
 </LinearLayout>
