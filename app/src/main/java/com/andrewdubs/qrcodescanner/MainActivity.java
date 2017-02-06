@@ -1,13 +1,13 @@
 package com.andrewdubs.qrcodescanner;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
@@ -21,7 +21,7 @@ import me.dm7.barcodescanner.zxing.ZXingScannerView;
  * Created by Andrew on 1/19/2017.
  */
 
-public class MainActivity extends Activity implements ZXingScannerView.ResultHandler {
+public class MainActivity extends AppCompatActivity implements ZXingScannerView.ResultHandler {
     private ZXingScannerView mScannerView;
 
     @Override
@@ -72,9 +72,11 @@ public class MainActivity extends Activity implements ZXingScannerView.ResultHan
     @Override
     protected void onPause() {
         super.onPause();
-        mScannerView.stopCamera();
+        if (mScannerView != null)
+        {
+            mScannerView.stopCamera();
+        }
     }
-
 
 
     @Override
