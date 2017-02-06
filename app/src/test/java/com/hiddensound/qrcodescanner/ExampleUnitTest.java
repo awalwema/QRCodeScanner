@@ -1,4 +1,4 @@
-package com.andrewdubs.qrcodescanner;
+package com.hiddensound.qrcodescanner;
 
 import org.junit.Test;
 

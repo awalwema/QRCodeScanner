@@ -1,4 +1,4 @@
-package com.andrewdubs.qrcodescanner;
+package com.hiddensound.qrcodescanner;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;

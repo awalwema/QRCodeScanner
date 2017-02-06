@@ -1,4 +1,4 @@
-package com.andrewdubs.qrcodescanner;
+package com.hiddensound.qrcodescanner;
 
 /**
  * Created by Andrew on 2/4/2017.

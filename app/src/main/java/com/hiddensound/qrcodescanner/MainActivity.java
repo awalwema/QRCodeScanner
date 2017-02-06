@@ -1,4 +1,4 @@
-package com.andrewdubs.qrcodescanner;
+package com.hiddensound.qrcodescanner;
 
 import android.Manifest;
 import android.app.AlertDialog;
