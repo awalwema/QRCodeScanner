@@ -10,6 +10,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.telephony.TelephonyManager;
+import android.util.JsonToken;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -82,7 +83,8 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
             toast.show();
         }*/
 
-        new JSONTask().execute("https://jsonparsingdemo-cec5b.firebaseapp.com/jsonData/moviesDemoItem.txt");
+        JSONTask task = new JSONTask(getApplicationContext());
+        task.execute("http://10.0.2.2:81/api/todoitems/edit");
 
 
 
@@ -145,80 +147,7 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
         }
     }
 
-    public class JSONTask extends AsyncTask<String, String, String>{
 
-        @Override
-        protected String doInBackground(String... params) {
-            HttpURLConnection connection = null;
-            BufferedReader reader = null;
-
-
-
-            try {
-                URL url = new URL(params[0]);
-                connection = (HttpURLConnection) url.openConnection();
-                connection.connect();
-
-                InputStream stream = connection.getInputStream();
-
-                reader = new BufferedReader(new InputStreamReader(stream));
-
-                StringBuffer buffer = new StringBuffer();
-                String line ="";
-                while ((line = reader.readLine()) != null){
-                    buffer.append(line);
-
-                }
-                String finalJson = buffer.toString();
-
-                JSONObject parentObject = new JSONObject(finalJson);
-                JSONArray parentArray = parentObject.getJSONArray("movies");
-                JSONObject finalObject = parentArray.getJSONObject(0);
-
-                String movieName = finalObject.getString("movie");
-                int year = finalObject.getInt("year");
-
-                return movieName + " - " + year;
-
-
-
-
-            } catch (MalformedURLException e){
-                e.printStackTrace();
-            }
-            catch (IOException e){
-                e.printStackTrace();
-
-            } catch (JSONException e){
-                e.printStackTrace();
-            }
-            finally {
-                if(connection != null) {
-                    connection.disconnect();
-                }
-                try {
-                    if(reader != null){
-                        reader.close();
-                    }
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-            }
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-            String text = result;
-
-            Toast toast = Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG);
-            toast.show();
-        }
-    }
 
 
 }
