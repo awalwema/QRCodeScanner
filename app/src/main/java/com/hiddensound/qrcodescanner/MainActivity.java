@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -15,7 +16,21 @@ import android.widget.Toast;
 
 import com.google.zxing.Result;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
+
+
 
 /**
  * Created by Andrew on 1/19/2017.
@@ -55,10 +70,10 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
 
         //String phone = tm.getLine1Number();
 
-        CharSequence text = tm.getDeviceId();
-
+       /* CharSequence text = tm.getDeviceId();
         Toast toast = Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG);
         toast.show();
+        */
        /*     }
         } catch (Exception e){
             Log.e("IMEI", "GETTING BETTER INFO ON ERROR", e);
@@ -66,6 +81,10 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
                     Toast.LENGTH_LONG);
             toast.show();
         }*/
+
+        new JSONTask().execute("https://jsonparsingdemo-cec5b.firebaseapp.com/jsonData/moviesDemoItem.txt");
+
+
 
     }
 
@@ -125,4 +144,81 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
                 super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
+
+    public class JSONTask extends AsyncTask<String, String, String>{
+
+        @Override
+        protected String doInBackground(String... params) {
+            HttpURLConnection connection = null;
+            BufferedReader reader = null;
+
+
+
+            try {
+                URL url = new URL(params[0]);
+                connection = (HttpURLConnection) url.openConnection();
+                connection.connect();
+
+                InputStream stream = connection.getInputStream();
+
+                reader = new BufferedReader(new InputStreamReader(stream));
+
+                StringBuffer buffer = new StringBuffer();
+                String line ="";
+                while ((line = reader.readLine()) != null){
+                    buffer.append(line);
+
+                }
+                String finalJson = buffer.toString();
+
+                JSONObject parentObject = new JSONObject(finalJson);
+                JSONArray parentArray = parentObject.getJSONArray("movies");
+                JSONObject finalObject = parentArray.getJSONObject(0);
+
+                String movieName = finalObject.getString("movie");
+                int year = finalObject.getInt("year");
+
+                return movieName + " - " + year;
+
+
+
+
+            } catch (MalformedURLException e){
+                e.printStackTrace();
+            }
+            catch (IOException e){
+                e.printStackTrace();
+
+            } catch (JSONException e){
+                e.printStackTrace();
+            }
+            finally {
+                if(connection != null) {
+                    connection.disconnect();
+                }
+                try {
+                    if(reader != null){
+                        reader.close();
+                    }
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            String text = result;
+
+            Toast toast = Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG);
+            toast.show();
+        }
+    }
+
+
 }
