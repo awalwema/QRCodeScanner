@@ -185,8 +185,7 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
 
             } catch (MalformedURLException e){
                 e.printStackTrace();
-            }
-            catch (IOException e){
+            } catch (IOException e){
                 e.printStackTrace();
 
             } catch (JSONException e){
