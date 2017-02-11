@@ -4,31 +4,19 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.telephony.TelephonyManager;
-import android.util.JsonToken;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import com.google.zxing.Result;
+import com.hiddensound.backend.JSONTask;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-
+import com.hiddensound.model.HiddenModel;
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 
@@ -61,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
     public void onClickIMEI(View v){
         //try {
         TelephonyManager tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-
+        HiddenModel.setIMEI(tm.getDeviceId());
             /*if(ContextCompat.checkSelfPermission(getApplicationContext(),
                     Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED){
                 ActivityCompat.requestPermissions(this,
@@ -106,6 +94,7 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
         Log.w("handleResult", result.getText());
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Scan result");
+        HiddenModel.setQRMEMO(result.getText());
         builder.setMessage(result.getText());
         AlertDialog alertDialog = builder.create();
         alertDialog.show();

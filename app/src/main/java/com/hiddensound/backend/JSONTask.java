@@ -1,4 +1,4 @@
-package com.hiddensound.qrcodescanner;
+package com.hiddensound.backend;
 
 import android.content.Context;
 import android.os.AsyncTask;
