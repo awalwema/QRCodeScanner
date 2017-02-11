@@ -1,9 +1,11 @@
 package com.hiddensound.backend;
 
 import android.app.Activity;
+import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -29,21 +31,24 @@ import java.net.URL;
  * Created by amarques on 2/11/2017.
  */
 
-public class JSONRequest extends AsyncTask<String, String, String>{
+public class JSONRequest extends AsyncTask<String, String, String> implements Application.ActivityLifecycleCallbacks{
     private static final String TAG = "MainActivity";
     Context appContext = null;
-    public JSONRequest(Context temp){
-        appContext = temp;
+    Activity appActivity = null;
+    public JSONRequest(Activity act){
+        super();
+        appActivity = act;
+        appContext = appActivity.getApplicationContext();
     }
 
     @Override
     protected String doInBackground(String... params) {
         String JsonResponse;
-        String JsonDATA = params[0];
+        String JsonDATA = params[1];
         HttpURLConnection urlConnection = null;
         BufferedReader reader = null;
         try {
-            URL url = new URL("https://dev-api-hiddensound.azurewebsites.net/Application/Auth/Login");
+            URL url = new URL(params[0]);
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setDoOutput(true);
             // is output buffer writter
@@ -88,9 +93,9 @@ public class JSONRequest extends AsyncTask<String, String, String>{
                 if(isVerified.getAsString().equals("true")) {
                     email.getAsString();
                     id.getAsString();
-                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                    appActivity.startActivity(new Intent(appActivity, MainActivity.class));
                 } else if(isDeveloper.getAsString().equals("true")) {
-                    startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
+                    appActivity.startActivity(new Intent(appActivity, RegisterActivity.class));
                 } else {
                     urlConnection.disconnect();
                 }
@@ -117,8 +122,43 @@ public class JSONRequest extends AsyncTask<String, String, String>{
         super.onPostExecute(result);
         String text = result;
 
-        Toast toast = Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG);
+        Toast toast = Toast.makeText(appContext, text, Toast.LENGTH_LONG);
         toast.show();
+    }
+
+    @Override
+    public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
+
+    }
+
+    @Override
+    public void onActivityStarted(Activity activity) {
+
+    }
+
+    @Override
+    public void onActivityResumed(Activity activity) {
+
+    }
+
+    @Override
+    public void onActivityPaused(Activity activity) {
+
+    }
+
+    @Override
+    public void onActivityStopped(Activity activity) {
+
+    }
+
+    @Override
+    public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
+
+    }
+
+    @Override
+    public void onActivityDestroyed(Activity activity) {
+
     }
 }
 

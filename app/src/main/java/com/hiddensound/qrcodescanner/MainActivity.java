@@ -14,9 +14,14 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.google.zxing.Result;
+import com.hiddensound.backend.JSONRequest;
 import com.hiddensound.backend.JSONTask;
 
 import com.hiddensound.model.HiddenModel;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 
@@ -71,8 +76,25 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
             toast.show();
         }*/
 
-        JSONTask task = new JSONTask(getApplicationContext());
-        task.execute("http://10.0.2.2:81/api/todoitems/edit");
+        //JSONTask task = new JSONTask(getApplicationContext());
+
+
+        JSONObject post_dict = new JSONObject();
+
+        try {
+            post_dict.put("IMEI", HiddenModel.getIMEI());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        if (post_dict.length() > 0) {
+            JSONRequest request = new JSONRequest(MainActivity.this);
+            request.execute("http://10.0.2.2:81/api/todoitems/create",
+                    String.valueOf(post_dict));
+//            new JSONRequest().execute(String.valueOf(post_dict));
+        }
+//        JSONRequest request = new JSONRequest(MainActivity.this);
+//        request.execute("http://10.0.2.2:81/api/todoitems/create");
 
 
 
