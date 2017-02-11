@@ -47,7 +47,7 @@
             android:padding="10dp"
             android:hint="@string/Username"
             android:textSize="20sp"
-            android:id="@+id/edtuserid" />
+            android:id="@+id/UserID" />
 
         <EditText
             android:layout_width="match_parent"
@@ -63,7 +63,7 @@
             android:padding="10dp"
             android:inputType="textPassword"
             android:layout_marginTop="5dp"
-            android:id="@+id/edtpass" />
+            android:id="@+id/UserPass" />
 
         <Button
             android:layout_width="match_parent"
@@ -75,8 +75,9 @@
             android:textSize="20sp"
             android:padding="10dp"
             android:layout_marginTop="10dp"
-            android:id="@+id/btnlogin"
-            android:text="@string/Login" />
+            android:id="@+id/Login"
+            android:text="@string/Login"
+            android:onClick="onClickLogin"/>
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
