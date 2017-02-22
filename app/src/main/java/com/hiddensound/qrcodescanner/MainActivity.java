@@ -14,10 +14,10 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.google.zxing.Result;
-import com.hiddensound.backend.JSONRequest;
-import com.hiddensound.backend.JSONTask;
+import com.hiddensound.Presenter.JSONRequest;
 
 import com.hiddensound.model.HiddenModel;
+import com.hiddensound.model.ModelInterface;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -32,11 +32,14 @@ import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 public class MainActivity extends AppCompatActivity implements ZXingScannerView.ResultHandler {
     private ZXingScannerView mScannerView;
+    private ModelInterface model;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        model = new HiddenModel();
 
     }
 
@@ -54,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
     public void onClickIMEI(View v){
         //try {
         TelephonyManager tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-        HiddenModel.setIMEI(tm.getDeviceId());
+        model.setIMEI(tm.getDeviceId());
             /*if(ContextCompat.checkSelfPermission(getApplicationContext(),
                     Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED){
                 ActivityCompat.requestPermissions(this,
@@ -82,7 +85,7 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
         JSONObject post_dict = new JSONObject();
 
         try {
-            post_dict.put("IMEI", HiddenModel.getIMEI());
+            post_dict.put("IMEI", model.getIMEI());
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -116,7 +119,7 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
         Log.w("handleResult", result.getText());
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Scan result");
-        HiddenModel.setQRMEMO(result.getText());
+        model.setQRMemo(result.getText());
         builder.setMessage(result.getText());
         AlertDialog alertDialog = builder.create();
         alertDialog.show();

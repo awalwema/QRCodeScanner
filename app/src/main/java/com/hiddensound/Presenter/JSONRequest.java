@@ -1,19 +1,15 @@
-package com.hiddensound.backend;
+package com.hiddensound.Presenter;
 
 import android.app.Activity;
-import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.hiddensound.qrcodescanner.LoginActivity;
 import com.hiddensound.qrcodescanner.MainActivity;
 import com.hiddensound.qrcodescanner.RegisterActivity;
 
@@ -31,7 +27,7 @@ import java.net.URL;
  * Created by amarques on 2/11/2017.
  */
 
-public class JSONRequest extends AsyncTask<String, String, String> implements Application.ActivityLifecycleCallbacks{
+public class JSONRequest extends AsyncTask<String, String, String>{
     private static final String TAG = "MainActivity";
     Context appContext = null;
     Activity appActivity = null;
@@ -126,40 +122,40 @@ public class JSONRequest extends AsyncTask<String, String, String> implements Ap
         toast.show();
     }
 
-    @Override
-    public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
-
-    }
-
-    @Override
-    public void onActivityStarted(Activity activity) {
-
-    }
-
-    @Override
-    public void onActivityResumed(Activity activity) {
-
-    }
-
-    @Override
-    public void onActivityPaused(Activity activity) {
-
-    }
-
-    @Override
-    public void onActivityStopped(Activity activity) {
-
-    }
-
-    @Override
-    public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
-
-    }
-
-    @Override
-    public void onActivityDestroyed(Activity activity) {
-
-    }
+//    @Override
+//    public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
+//
+//    }
+//
+//    @Override
+//    public void onActivityStarted(Activity activity) {
+//
+//    }
+//
+//    @Override
+//    public void onActivityResumed(Activity activity) {
+//
+//    }
+//
+//    @Override
+//    public void onActivityPaused(Activity activity) {
+//
+//    }
+//
+//    @Override
+//    public void onActivityStopped(Activity activity) {
+//
+//    }
+//
+//    @Override
+//    public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
+//
+//    }
+//
+//    @Override
+//    public void onActivityDestroyed(Activity activity) {
+//
+//    }
 }
 
 

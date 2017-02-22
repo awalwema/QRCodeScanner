@@ -6,33 +6,16 @@ package com.hiddensound.qrcodescanner;
 
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.hiddensound.backend.JSONRequest;
+import com.hiddensound.Presenter.JSONRequest;
 import com.hiddensound.model.HiddenModel;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
-import java.net.HttpURLConnection;
-import java.net.URL;
 
 //import android.support.design.widget.FloatingActionButton;
 //import android.support.design.widget.Snackbar;
@@ -89,7 +72,8 @@ public class LoginActivity extends AppCompatActivity {
 //            HttpURLConnection urlConnection = null;
 //            BufferedReader reader = null;
 //            try {
-//                URL url = new URL("https://dev-api-hiddensound.azurewebsites.net/Application/Auth/Login");
+//                URL url = new URL("https://dev-api-hiddensound.azurewebsites.net/Application/
+// Auth/Login");
 //                urlConnection = (HttpURLConnection) url.openConnection();
 //                urlConnection.setDoOutput(true);
 //                // is output buffer writter
@@ -97,7 +81,8 @@ public class LoginActivity extends AppCompatActivity {
 //                urlConnection.setRequestProperty("Content-Type", "application/json");
 //                urlConnection.setRequestProperty("Accept", "application/json");
 ////set headers and method
-//                Writer writer = new BufferedWriter(new OutputStreamWriter(urlConnection.getOutputStream(), "UTF-8"));
+//                Writer writer = new BufferedWriter(new OutputStreamWriter(urlConnection.
+// getOutputStream(), "UTF-8"));
 //                writer.write(JsonDATA);
 //// json data
 //                writer.close();

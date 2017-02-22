@@ -4,51 +4,50 @@ package com.hiddensound.model;
  * Created by amarques on 2/11/2017.
  */
 
-public class HiddenModel {
-    private static String IMEI = null;
-    private static String QRMEMO = null;
-    private static String USERNAME = null;
-    private static String PASS = null;
-    private static String TOKERN = null;
+public class HiddenModel implements ModelInterface{
+    protected String IMEI = null;
+    private String QRMEMO = null;
+    private String USERNAME = null;
+    private String TOKERN = null;
 
-    public static String getIMEI() {
+    @Override
+    public String getIMEI() {
         return IMEI;
     }
 
-    public static void setIMEI(String IMEI) {
-        HiddenModel.IMEI = IMEI;
-    }
-
-    public static String getQRMEMO() {
+    @Override
+    public String getQRMemo() {
         return QRMEMO;
     }
 
-    public static void setQRMEMO(String QRMEMO) {
-        HiddenModel.QRMEMO = QRMEMO;
-    }
-
-    public static String getUSERNAME() {
+    @Override
+    public String getUser() {
         return USERNAME;
     }
 
-    public static void setUSERNAME(String USERNAME) {
-        HiddenModel.USERNAME = USERNAME;
-    }
-
-    public static String getPASS() {
-        return PASS;
-    }
-
-    public static void setPASS(String PASS) {
-        HiddenModel.PASS = PASS;
-    }
-
-    public static String getTOKERN() {
+    @Override
+    public String getToken() {
         return TOKERN;
     }
 
-    public static void setTOKERN(String TOKERN) {
-        HiddenModel.TOKERN = TOKERN;
+    @Override
+    public void setIMEI(String imei) {
+        this.IMEI = imei;
+    }
+
+    @Override
+    public void setQRMemo(String qrMemo) {
+        this.QRMEMO = qrMemo;
+    }
+
+    @Override
+    public void setUser(String user) {
+        this.USERNAME = user;
+    }
+
+    @Override
+    public void setToken(String token) {
+        this.TOKERN = token;
     }
 
 
