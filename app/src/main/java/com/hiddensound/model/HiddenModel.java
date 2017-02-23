@@ -1,54 +1,41 @@
 package com.hiddensound.model;
 
+import android.support.annotation.Nullable;
+
 /**
  * Created by amarques on 2/11/2017.
  */
 
-public class HiddenModel implements ModelInterface{
-    protected String IMEI = null;
-    private String QRMEMO = null;
-    private String USERNAME = null;
-    private String TOKERN = null;
+public class HiddenModel {
+    private final String IMEI;
+    private final String QRMEMO;
+    private final String USERNAME;
+    private final String TOKERN;
 
-    @Override
+    public HiddenModel(String imei, String qrMemo, String userName, String token){
+        IMEI = imei;
+        QRMEMO = qrMemo;
+        USERNAME = userName;
+        TOKERN = token;
+    }
+
+    public HiddenModel(String imei, String qrMemo){
+        this(imei, qrMemo, null, null);
+    }
+
     public String getIMEI() {
         return IMEI;
     }
 
-    @Override
     public String getQRMemo() {
         return QRMEMO;
     }
 
-    @Override
     public String getUser() {
         return USERNAME;
     }
 
-    @Override
     public String getToken() {
         return TOKERN;
     }
-
-    @Override
-    public void setIMEI(String imei) {
-        this.IMEI = imei;
-    }
-
-    @Override
-    public void setQRMemo(String qrMemo) {
-        this.QRMEMO = qrMemo;
-    }
-
-    @Override
-    public void setUser(String user) {
-        this.USERNAME = user;
-    }
-
-    @Override
-    public void setToken(String token) {
-        this.TOKERN = token;
-    }
-
-
 }

@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -11,17 +12,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.Thing;
 import com.google.zxing.Result;
 import com.hiddensound.Presenter.JSONRequest;
 
-import com.hiddensound.model.HiddenModel;
-import com.hiddensound.model.ModelInterface;
-
-import org.json.JSONException;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import org.json.JSONObject;
-
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 
@@ -31,19 +31,75 @@ import me.dm7.barcodescanner.zxing.ZXingScannerView;
  */
 
 public class MainActivity extends AppCompatActivity implements ZXingScannerView.ResultHandler {
+    private static final String TAG = "MainActivity";
     private ZXingScannerView mScannerView;
-    private ModelInterface model;
+    private SlidingUpPanelLayout mLayout;
+    TextView mainText;
+    TextView bottomSlider;
+//    private ModelInterface model;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        model = new HiddenModel();
+//        model = new HiddenModel();
 
+        inti();
     }
 
-    public void onClickCamera(View v){
+
+    public void inti() {
+        mLayout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
+        mainText = (TextView) findViewById(R.id.main_back);
+        bottomSlider = (TextView) findViewById(R.id.slider);
+
+        mLayout.setPanelSlideListener(onSlideListener());
+    }
+
+    private SlidingUpPanelLayout.PanelSlideListener onSlideListener() {
+        return new SlidingUpPanelLayout.PanelSlideListener(){
+
+            @Override
+            public void onPanelSlide(View panel, float slideOffset) {
+                Log.e(TAG, "onPanelSlide, offset " + slideOffset);
+                mainText.setText("onPanelSlide");
+                bottomSlider.setText("onPanelSlide");
+            }
+
+            @Override
+            public void onPanelCollapsed(View panel) {
+                Log.e(TAG, "onPanelCollapse");
+                mainText.setText("onPanelCollapse");
+                bottomSlider.setText("onPanelCollapse");
+            }
+
+            @Override
+            public void onPanelExpanded(View panel) {
+                Log.e(TAG, "onPanelExpand");
+                mainText.setText("onPanelExpand");
+                bottomSlider.setText("onPanelExpand");
+            }
+
+            @Override
+            public void onPanelAnchored(View panel) {
+                Log.e(TAG, "onPanelAnchor");
+                mainText.setText("onPanelAnchor");
+                bottomSlider.setText("onPanelAnchor");
+            }
+
+            @Override
+            public void onPanelHidden(View panel) {
+                Log.e(TAG, "onPanelHide");
+                mainText.setText("onPanelHide");
+                bottomSlider.setText("onPanelHide");
+            }
+        };
+    }
+
+
+
+    public void onClickCamera(View v) {
 
         checkPermission();
 
@@ -54,10 +110,10 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
 
     }
 
-    public void onClickIMEI(View v){
+    public void onClickIMEI(View v) {
         //try {
         TelephonyManager tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-        model.setIMEI(tm.getDeviceId());
+//        model.setIMEI(tm.getDeviceId());
             /*if(ContextCompat.checkSelfPermission(getApplicationContext(),
                     Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED){
                 ActivityCompat.requestPermissions(this,
@@ -84,11 +140,11 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
 
         JSONObject post_dict = new JSONObject();
 
-        try {
-            post_dict.put("IMEI", model.getIMEI());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            post_dict.put("IMEI", model.getIMEI());
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
 
         if (post_dict.length() > 0) {
             JSONRequest request = new JSONRequest(MainActivity.this);
@@ -100,14 +156,12 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
 //        request.execute("http://10.0.2.2:81/api/todoitems/create");
 
 
-
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        if (mScannerView != null)
-        {
+        if (mScannerView != null) {
             mScannerView.stopCamera();
         }
     }
@@ -119,7 +173,7 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
         Log.w("handleResult", result.getText());
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Scan result");
-        model.setQRMemo(result.getText());
+//        model.setQRMemo(result.getText());
         builder.setMessage(result.getText());
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
@@ -147,7 +201,7 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         switch (requestCode) {
             case REQUEST_CODE_ASK_PERMISSIONS:
-                if(ActivityCompat.checkSelfPermission(this, permissions[0]) == PackageManager.PERMISSION_GRANTED)    {
+                if (ActivityCompat.checkSelfPermission(this, permissions[0]) == PackageManager.PERMISSION_GRANTED) {
                     // Permission Granted
                     mScannerView.startCamera();
                 } else {
@@ -162,6 +216,21 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
     }
 
 
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    public Action getIndexApiAction() {
+        Thing object = new Thing.Builder()
+                .setName("Main Page") // TODO: Define a title for the content shown.
+                // TODO: Make sure this auto-generated URL is correct.
+                .setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
+                .build();
+        return new Action.Builder(Action.TYPE_VIEW)
+                .setObject(object)
+                .setActionStatus(Action.STATUS_TYPE_COMPLETED)
+                .build();
+    }
 
 
 }

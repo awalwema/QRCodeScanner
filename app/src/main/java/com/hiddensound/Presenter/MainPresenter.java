@@ -20,21 +20,8 @@ public class MainPresenter implements MainPresenterInterface, ModelInterface.onM
 
     @Override
     public void setIMEI() {
-        model.setIMEI();
+//        model.setIMEI();
     }
 
-    @Override
-    public void setQRMemo() {
 
-    }
-
-    @Override
-    public void setUser() {
-
-    }
-
-    @Override
-    public void setToken() {
-
-    }
 }

@@ -5,20 +5,14 @@ package com.hiddensound.model;
  */
 
 public interface ModelInterface {
-    String getIMEI();
-    String getQRMemo();
-    String getUser();
-    String getToken();
+
     void setIMEI(String imei);
     void setQRMemo(String  qrMemo);
     void setUser(String user);
     void setToken(String token);
-
+    HiddenModel create();
 
     interface onModelCall{
         void setIMEI();
-        void setQRMemo();
-        void setUser();
-        void setToken();
     }
 }

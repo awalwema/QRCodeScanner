@@ -40,19 +40,19 @@ public class LoginActivity extends AppCompatActivity {
         //function in the activity that corresponds to the layout button
 //        UserID = UserIDView.getText().toString();
 //        UserPass = UserPassView.getText().toString();
-        HiddenModel.setUSERNAME(UserIDView.getText().toString());
-        HiddenModel.setPASS(UserPassView.getText().toString());
+//        HiddenModel.setUSERNAME(UserIDView.getText().toString());
+//        HiddenModel.setPASS(UserPassView.getText().toString());
 
         JSONObject post_dict = new JSONObject();
 
-       try {
-            post_dict.put("email", HiddenModel.getUSERNAME());
-            post_dict.put("password", HiddenModel.getPASS());
-
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+//       try {
+//            post_dict.put("email", HiddenModel.getUSERNAME());
+//            post_dict.put("password", HiddenModel.getPASS());
+//
+//
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
 
         if (post_dict.length() > 0) {
             JSONRequest request = new JSONRequest(LoginActivity.this);
