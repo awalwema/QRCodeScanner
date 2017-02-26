@@ -12,9 +12,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.zxing.Result;
+import com.hiddensound.Presenter.JSONRequest;
+
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -37,14 +41,73 @@ import me.dm7.barcodescanner.zxing.ZXingScannerView;
  */
 
 public class MainActivity extends AppCompatActivity implements ZXingScannerView.ResultHandler {
+    private static final String TAG = "MainActivity";
     private ZXingScannerView mScannerView;
+    private SlidingUpPanelLayout mLayout;
+    TextView mainText;
+    TextView bottomSlider;
+//    private ModelInterface model;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+//        model = new HiddenModel();
+
+        inti();
     }
+
+
+    public void inti() {
+        mLayout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
+        mainText = (TextView) findViewById(R.id.main_back);
+        bottomSlider = (TextView) findViewById(R.id.slider);
+
+        mLayout.setPanelSlideListener(onSlideListener());
+    }
+
+    private SlidingUpPanelLayout.PanelSlideListener onSlideListener() {
+        return new SlidingUpPanelLayout.PanelSlideListener(){
+
+            @Override
+            public void onPanelSlide(View panel, float slideOffset) {
+                Log.e(TAG, "onPanelSlide, offset " + slideOffset);
+                mainText.setText("onPanelSlide");
+                bottomSlider.setText("onPanelSlide");
+            }
+
+            @Override
+            public void onPanelCollapsed(View panel) {
+                Log.e(TAG, "onPanelCollapse");
+                mainText.setText("onPanelCollapse");
+                bottomSlider.setText("onPanelCollapse");
+            }
+
+            @Override
+            public void onPanelExpanded(View panel) {
+                Log.e(TAG, "onPanelExpand");
+                mainText.setText("onPanelExpand");
+                bottomSlider.setText("onPanelExpand");
+            }
+
+            @Override
+            public void onPanelAnchored(View panel) {
+                Log.e(TAG, "onPanelAnchor");
+                mainText.setText("onPanelAnchor");
+                bottomSlider.setText("onPanelAnchor");
+            }
+
+            @Override
+            public void onPanelHidden(View panel) {
+                Log.e(TAG, "onPanelHide");
+                mainText.setText("onPanelHide");
+                bottomSlider.setText("onPanelHide");
+            }
+        };
+    }
+
+
 
     public void onClickCamera(View v){
 
@@ -85,6 +148,23 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
         new JSONTask().execute("https://jsonparsingdemo-cec5b.firebaseapp.com/jsonData/moviesDemoItem.txt");
 
 
+        JSONObject post_dict = new JSONObject();
+
+//        try {
+//            post_dict.put("IMEI", model.getIMEI());
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+
+        if (post_dict.length() > 0) {
+            JSONRequest request = new JSONRequest(MainActivity.this);
+            request.execute("http://10.0.2.2:81/api/todoitems/create",
+                    String.valueOf(post_dict));
+//            new JSONRequest().execute(String.valueOf(post_dict));
+        }
+//        JSONRequest request = new JSONRequest(MainActivity.this);
+//        request.execute("http://10.0.2.2:81/api/todoitems/create");
+
 
     }
 
@@ -104,6 +184,7 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
         Log.w("handleResult", result.getText());
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Scan result");
+//        model.setQRMemo(result.getText());
         builder.setMessage(result.getText());
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
