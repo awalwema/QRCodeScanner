@@ -4,30 +4,16 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.telephony.TelephonyManager;
-import android.util.JsonToken;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import com.google.zxing.Result;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
@@ -44,13 +30,13 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        checkPermissions();
 
     }
 
     public void onClickCamera(View v){
 
-        checkPermission();
-
+        checkPermissions();
         mScannerView = new ZXingScannerView(this);
         setContentView(mScannerView);
         mScannerView.setResultHandler(this);
@@ -116,9 +102,14 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
 
     final private int REQUEST_CODE_ASK_PERMISSIONS = 123;
     private static final int REQUEST_CAMERA = 0;
+    private static final int REQUEST_PHONE_STATE = 1;
+    private static final int REQUEST_STORAGE = 2;
 
-    private void checkPermission() {
+    private void checkPermissions() {
         int hasCameraPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
+        int hasPhoneStatePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE);
+        int hasStoragePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
         if (hasCameraPermission != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(MainActivity.this,
                     new String[]{Manifest.permission.CAMERA},
@@ -126,19 +117,61 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
 
         }
 
+        if (hasPhoneStatePermission != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(MainActivity.this,
+                    new String[]{Manifest.permission.READ_PHONE_STATE},
+                    REQUEST_PHONE_STATE);
+
+        }
+
+        if (hasStoragePermission != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(MainActivity.this,
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    REQUEST_STORAGE);
+
+        }
+
+
+
 
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         switch (requestCode) {
-            case REQUEST_CODE_ASK_PERMISSIONS:
+            case REQUEST_CAMERA:
                 if(ActivityCompat.checkSelfPermission(this, permissions[0]) == PackageManager.PERMISSION_GRANTED)    {
                     // Permission Granted
-                    mScannerView.startCamera();
+                    if (mScannerView == null)
+                    {
+                        mScannerView = new ZXingScannerView(this);
+                        setContentView(mScannerView);
+                        mScannerView.setResultHandler(this);
+                        mScannerView.startCamera();
+                    }
                 } else {
                     // Permission Denied
                     Toast.makeText(MainActivity.this, "CAMERA Denied", Toast.LENGTH_SHORT)
+                            .show();
+                }
+                break;
+            case REQUEST_PHONE_STATE:
+                if(ActivityCompat.checkSelfPermission(this, permissions[0]) == PackageManager.PERMISSION_GRANTED)    {
+                    // Permission Granted
+
+                } else {
+                    // Permission Denied
+                    Toast.makeText(MainActivity.this, "IMEI Access Denied", Toast.LENGTH_SHORT)
+                            .show();
+                }
+                break;
+            case REQUEST_STORAGE:
+                if(ActivityCompat.checkSelfPermission(this, permissions[0]) == PackageManager.PERMISSION_GRANTED)    {
+                    // Permission Granted
+
+                } else {
+                    // Permission Denied
+                    Toast.makeText(MainActivity.this, "Storage Access Denied", Toast.LENGTH_SHORT)
                             .show();
                 }
                 break;
