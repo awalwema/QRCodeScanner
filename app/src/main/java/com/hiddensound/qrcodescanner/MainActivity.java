@@ -130,7 +130,7 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         switch (requestCode) {
-            case REQUEST_CODE_ASK_PERMISSIONS:
+            case REQUEST_CAMERA:
                 if(ActivityCompat.checkSelfPermission(this, permissions[0]) == PackageManager.PERMISSION_GRANTED)    {
                     // Permission Granted
                     mScannerView.startCamera();
@@ -138,6 +138,7 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
                     // Permission Denied
                     Toast.makeText(MainActivity.this, "CAMERA Denied", Toast.LENGTH_SHORT)
                             .show();
+                    this.onBackPressed();
                 }
                 break;
             default:
