@@ -6,6 +6,7 @@ package com.hiddensound.model;
 
 public interface ModelInterface {
 
+    void setTokenTime (String tokenTime);
     void setIMEI(String imei);
     void setQRMemo(String  qrMemo);
     void setUser(String user);

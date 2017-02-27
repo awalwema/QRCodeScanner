@@ -7,20 +7,22 @@ import android.support.annotation.Nullable;
  */
 
 public class HiddenModel {
+    private final int TOKENTIME;
     private final String IMEI;
     private final String QRMEMO;
     private final String USERNAME;
-    private final String TOKERN;
+    private final String TOKEN;
 
-    public HiddenModel(String imei, String qrMemo, String userName, String token){
+    public HiddenModel(String imei, String qrMemo, String userName, String token, int tokenTime){
         IMEI = imei;
         QRMEMO = qrMemo;
         USERNAME = userName;
-        TOKERN = token;
+        TOKEN = token;
+        TOKENTIME = tokenTime;
     }
 
     public HiddenModel(String imei, String qrMemo){
-        this(imei, qrMemo, null, null);
+        this(imei, qrMemo, null, null, 0);
     }
 
     public String getIMEI() {
@@ -36,6 +38,6 @@ public class HiddenModel {
     }
 
     public String getToken() {
-        return TOKERN;
+        return TOKEN;
     }
 }

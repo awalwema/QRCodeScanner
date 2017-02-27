@@ -16,7 +16,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.zxing.Result;
-import com.hiddensound.Presenter.JSONRequest;
 
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
@@ -120,52 +119,9 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
 
     }
 
-    public void onClickIMEI(View v){
+    public void onClickIMEI(View v) {
         //try {
         TelephonyManager tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-
-            /*if(ContextCompat.checkSelfPermission(getApplicationContext(),
-                    Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED){
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.READ_PHONE_STATE},MY_PERMISSIONS_REQUEST);
-            }
-            if(MY_PERMISSIONS_REQUEST!=0) {*/
-
-        //String phone = tm.getLine1Number();
-
-       /* CharSequence text = tm.getDeviceId();
-        Toast toast = Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG);
-        toast.show();
-        */
-       /*     }
-        } catch (Exception e){
-            Log.e("IMEI", "GETTING BETTER INFO ON ERROR", e);
-            Toast toast = Toast.makeText(getApplicationContext(), e.getMessage().toString(),
-                    Toast.LENGTH_LONG);
-            toast.show();
-        }*/
-
-        new JSONTask().execute("https://jsonparsingdemo-cec5b.firebaseapp.com/jsonData/moviesDemoItem.txt");
-
-
-        JSONObject post_dict = new JSONObject();
-
-//        try {
-//            post_dict.put("IMEI", model.getIMEI());
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-
-        if (post_dict.length() > 0) {
-            JSONRequest request = new JSONRequest(MainActivity.this);
-            request.execute("http://10.0.2.2:81/api/todoitems/create",
-                    String.valueOf(post_dict));
-//            new JSONRequest().execute(String.valueOf(post_dict));
-        }
-//        JSONRequest request = new JSONRequest(MainActivity.this);
-//        request.execute("http://10.0.2.2:81/api/todoitems/create");
-
-
     }
 
     @Override
