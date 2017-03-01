@@ -30,7 +30,7 @@ public class HttpHelperClient {
 
     }
 
-    public void requestToken(String UserID, String UserPass) {
+    public void requestToken(String UserID, String UserPass, final Callback<Integer> callback) {
         try {
             params.put("username", UserID);
             params.put("password", UserPass);
@@ -38,10 +38,11 @@ public class HttpHelperClient {
             params.put("client_id", "a5U4DvFf3r2N9Kg");
             client.addHeader("Content-Type", "application/x-www-form-urlencoded");
 
-            client.post("https://dev-api-hiddensound.azurewebsites.net/OAuth/Token", params, new TextHttpResponseHandler() {
+            client.post("https://dev-api-hiddensound.azurewebsites.net/OAuth/Token", params,
+                    new TextHttpResponseHandler() {
                     @Override
-                    public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-
+                    public void onFailure(int statusCode, Header[] headers, String responseString,
+                                          Throwable throwable) {
                         response = -1;
                     }
 
@@ -52,8 +53,16 @@ public class HttpHelperClient {
 //                    }
 
 
+                        @Override
+                        public void onFinish() {
+                            super.onFinish();
 
-                    @Override
+                            if(callback != null){
+                                callback.onResponse(1);
+                            }
+                        }
+
+                        @Override
                     public void onSuccess(int statusCode, Header[] headers, String responseString) {
                         response = 1;
                         tokenstring = responseString;
