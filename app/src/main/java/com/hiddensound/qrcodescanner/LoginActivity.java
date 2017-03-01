@@ -6,6 +6,7 @@ package com.hiddensound.qrcodescanner;
 
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -53,6 +54,7 @@ public class LoginActivity extends AppCompatActivity implements LoginInterface{
         UserPass = UserPassView.getText().toString();
         loginPresenter.checklogin(UserID, UserPass);
     }
+
     public void setToast(String msg){
         Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
     }
@@ -69,7 +71,7 @@ public class LoginActivity extends AppCompatActivity implements LoginInterface{
 
 
     public void startRegisterActivity(View v) {
-        startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://dev-hiddensound.azurewebsites.net/register")));
     }
 
     public void startFeaturesActivity(View v) {
