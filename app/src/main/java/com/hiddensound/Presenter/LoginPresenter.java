@@ -29,7 +29,7 @@ public class LoginPresenter implements LoginPresenterInterface {
 
     @Override
     public void checklogin(String UserName, String Password) {
-
+        activity.showPB();
 
         httphelper.requestToken(UserName, Password, new Callback<Integer>(){
             @Override
@@ -42,6 +42,8 @@ public class LoginPresenter implements LoginPresenterInterface {
                     Log.e("fudge", "up");
                     activity.setToast("Invalid username and/or password.");
                 }
+
+                activity.hidePB();
             }
         });
 //            httphelper.setResponseValid(false);

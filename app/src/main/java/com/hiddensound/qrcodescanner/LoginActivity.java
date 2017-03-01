@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 
@@ -31,6 +32,7 @@ public class LoginActivity extends AppCompatActivity implements LoginInterface{
     EditText UserPassView;
     String UserID;
     String UserPass;
+    ProgressBar checkBar;
 
 
     @Override
@@ -39,6 +41,7 @@ public class LoginActivity extends AppCompatActivity implements LoginInterface{
         setContentView(R.layout.activity_login);
         UserIDView = (EditText) findViewById(R.id.UserID);
         UserPassView = (EditText) findViewById(R.id.UserPass);
+        checkBar = (ProgressBar) findViewById(R.id.pbbar);
         loginPresenter = new LoginPresenter(this);
 
     }
@@ -52,6 +55,16 @@ public class LoginActivity extends AppCompatActivity implements LoginInterface{
     }
     public void setToast(String msg){
         Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void showPB() {
+        checkBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hidePB() {
+        checkBar.setVisibility(View.INVISIBLE);
     }
 
 

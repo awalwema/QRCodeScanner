@@ -7,5 +7,6 @@ package com.hiddensound.qrcodescanner;
 public interface LoginInterface {
     void callmain();
     void setToast(String msg);
-
+    void showPB();
+    void hidePB();
 }

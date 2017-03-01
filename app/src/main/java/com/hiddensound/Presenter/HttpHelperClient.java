@@ -46,11 +46,12 @@ public class HttpHelperClient {
                         response = -1;
                     }
 
-//                    @Override
-//                    public void onStart() {
-//                        super.onStart();
-//                        response = 0;
-//                    }
+                    @Override
+                    public void onStart() {
+                        super.onStart();
+                        response = 0;
+
+                    }
 
 
                         @Override
