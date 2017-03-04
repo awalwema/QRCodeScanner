@@ -1,14 +1,6 @@
 package com.hiddensound.Presenter;
 
-import android.content.Intent;
-import android.preference.PreferenceActivity;
-import android.widget.Toast;
-
-import com.hiddensound.qrcodescanner.LoginActivity;
-import com.hiddensound.qrcodescanner.MainActivity;
-import com.hiddensound.qrcodescanner.RegisterActivity;
 import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 

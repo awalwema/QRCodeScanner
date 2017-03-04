@@ -9,4 +9,6 @@ public interface LoginInterface {
     void setToast(String msg);
     void showPB();
     void hidePB();
+
+    void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults);
 }

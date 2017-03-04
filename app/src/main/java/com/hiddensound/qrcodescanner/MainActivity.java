@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        checkPermissions();
+        checkPermissionCamera();
 
 //        model = new HiddenModel();
 
@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
 
     public void onClickCamera(View v){
 
-        checkPermissions();
+        checkPermissionCamera();
         mScannerView = new ZXingScannerView(this);
         setContentView(mScannerView);
         mScannerView.setResultHandler(this);
@@ -149,41 +149,25 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
         //mScannerView.resumeCameraPreview(this);
     }
 
-    final private int REQUEST_CODE_ASK_PERMISSIONS = 123;
+
     private static final int REQUEST_CAMERA = 0;
     private static final int REQUEST_PHONE_STATE = 1;
     private static final int REQUEST_STORAGE = 2;
 
-    private void checkPermissions() {
+    private void checkPermissionCamera() {
         int hasCameraPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
-        int hasPhoneStatePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE);
-        int hasStoragePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
         if (hasCameraPermission != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(MainActivity.this,
                     new String[]{Manifest.permission.CAMERA},
                     REQUEST_CAMERA);
-
         }
-
-        if (hasPhoneStatePermission != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(MainActivity.this,
-                    new String[]{Manifest.permission.READ_PHONE_STATE},
-                    REQUEST_PHONE_STATE);
-
-        }
-
-        if (hasStoragePermission != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(MainActivity.this,
-                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                    REQUEST_STORAGE);
-
-        }
-
-
-
 
     }
+
+
+
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
@@ -205,26 +189,7 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
                     this.onBackPressed();
                 }
                 break;
-            case REQUEST_PHONE_STATE:
-                if(ActivityCompat.checkSelfPermission(this, permissions[0]) == PackageManager.PERMISSION_GRANTED)    {
-                    // Permission Granted
 
-                } else {
-                    // Permission Denied
-                    Toast.makeText(MainActivity.this, "IMEI Access Denied", Toast.LENGTH_SHORT)
-                            .show();
-                }
-                break;
-            case REQUEST_STORAGE:
-                if(ActivityCompat.checkSelfPermission(this, permissions[0]) == PackageManager.PERMISSION_GRANTED)    {
-                    // Permission Granted
-
-                } else {
-                    // Permission Denied
-                    Toast.makeText(MainActivity.this, "Storage Access Denied", Toast.LENGTH_SHORT)
-                            .show();
-                }
-                break;
             default:
                 super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }

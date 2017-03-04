@@ -6,16 +6,15 @@ package com.hiddensound.qrcodescanner;
 
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
-
-
 
 import com.hiddensound.Presenter.LoginPresenter;
 import com.hiddensound.Presenter.LoginPresenterInterface;
@@ -34,6 +33,7 @@ public class LoginActivity extends AppCompatActivity implements LoginInterface{
     String UserID;
     String UserPass;
     ProgressBar checkBar;
+    private static final int REQUEST_PHONE_STATE = 1;
 
 
     @Override
@@ -44,6 +44,7 @@ public class LoginActivity extends AppCompatActivity implements LoginInterface{
         UserPassView = (EditText) findViewById(R.id.UserPass);
         checkBar = (ProgressBar) findViewById(R.id.pbbar);
         loginPresenter = new LoginPresenter(this);
+        loginPresenter.checkPhoneState(this, REQUEST_PHONE_STATE);
 
     }
 
@@ -81,6 +82,23 @@ public class LoginActivity extends AppCompatActivity implements LoginInterface{
     @Override
     public void callmain() {
         startActivity(new Intent(LoginActivity.this, MainActivity.class));
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_PHONE_STATE:
+                if(ActivityCompat.checkSelfPermission(this, permissions[0]) == PackageManager.PERMISSION_GRANTED)    {
+                    // Permission Granted
+
+                } else {
+                    // Permission Denied
+                    this.setToast("IMEI Access Denied");
+                }
+                break;
+            default:
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
     }
 }
 
