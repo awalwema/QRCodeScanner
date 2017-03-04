@@ -17,6 +17,9 @@ import android.widget.Toast;
 
 import com.google.zxing.Result;
 
+import com.hiddensound.Presenter.MainPresenter;
+import com.hiddensound.Presenter.MainPresenterInterface;
+import com.hiddensound.model.HiddenModel;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import org.json.JSONArray;
@@ -43,6 +46,8 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
     private static final String TAG = "MainActivity";
     private ZXingScannerView mScannerView;
     private SlidingUpPanelLayout mLayout;
+    private static final int REQUEST_CAMERA = 0;
+    private MainPresenterInterface mainP;
     TextView mainText;
     TextView bottomSlider;
 //    private ModelInterface model;
@@ -51,11 +56,18 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        checkPermissionCamera();
 
 //        model = new HiddenModel();
 
-        inti();
+        mainP = new MainPresenter();
+        mainP.checkPermissions(this, REQUEST_CAMERA);
+
+        mScannerView = new ZXingScannerView(this);
+        setContentView(mScannerView);
+        mScannerView.setResultHandler(this);
+        mScannerView.startCamera();
+
+//        inti();
     }
 
 
@@ -108,17 +120,6 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
     }
 
 
-
-    public void onClickCamera(View v){
-
-        checkPermissionCamera();
-        mScannerView = new ZXingScannerView(this);
-        setContentView(mScannerView);
-        mScannerView.setResultHandler(this);
-        mScannerView.startCamera();
-
-    }
-
     public void onClickIMEI(View v) {
         //try {
         TelephonyManager tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
@@ -150,25 +151,6 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
     }
 
 
-    private static final int REQUEST_CAMERA = 0;
-    private static final int REQUEST_PHONE_STATE = 1;
-    private static final int REQUEST_STORAGE = 2;
-
-    private void checkPermissionCamera() {
-        int hasCameraPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
-
-        if (hasCameraPermission != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(MainActivity.this,
-                    new String[]{Manifest.permission.CAMERA},
-                    REQUEST_CAMERA);
-        }
-
-    }
-
-
-
-
-
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         switch (requestCode) {
@@ -180,7 +162,6 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
                         mScannerView = new ZXingScannerView(this);
                         setContentView(mScannerView);
                         mScannerView.setResultHandler(this);
-                        mScannerView.startCamera();
                     }
                 } else {
                     // Permission Denied
@@ -188,8 +169,10 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
                             .show();
                     this.onBackPressed();
                 }
-                break;
 
+                mScannerView.startCamera();
+
+                break;
             default:
                 super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
