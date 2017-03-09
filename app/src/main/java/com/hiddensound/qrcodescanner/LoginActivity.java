@@ -76,7 +76,7 @@ public class LoginActivity extends AppCompatActivity implements LoginInterface{
     }
 
     public void startFeaturesActivity(View v) {
-        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+        startActivity(new Intent(LoginActivity.this, DecoderActivity.class));
     }
 
     @Override
