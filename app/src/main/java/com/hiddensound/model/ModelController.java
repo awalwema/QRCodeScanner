@@ -5,15 +5,15 @@ package com.hiddensound.model;
  */
 
 public class ModelController implements ModelInterface {
-    private int tokenTime;
+    private long tokenTime = 0;
     private  String imei = null;
     private String qrMemo = null;
     private String userName = null;
     private String token = null;
 
     @Override
-    public void setTokenTime(String stringtokenTime) {
-        tokenTime = Integer.parseInt(stringtokenTime);
+    public void setTokenTime(long tokenTime) {
+        this.tokenTime = tokenTime;
     }
 
     @Override
@@ -39,5 +39,21 @@ public class ModelController implements ModelInterface {
     @Override
     public HiddenModel create() {
         return new HiddenModel(imei, qrMemo, userName, token, tokenTime);
+    }
+
+    @Override
+    public HiddenModel create(HiddenModel hiddenModel) {
+        if(imei == null)
+            imei = hiddenModel.getIMEI();
+        if(qrMemo == null)
+            qrMemo = hiddenModel.getQRMemo();
+        if(userName == null)
+            userName = hiddenModel.getUser();
+        if(token == null)
+            token = hiddenModel.getToken();
+        if(tokenTime == 0)
+            tokenTime = hiddenModel.getTokenTime();
+
+        return create();
     }
 }

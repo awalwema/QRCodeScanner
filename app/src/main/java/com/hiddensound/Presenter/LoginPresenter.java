@@ -1,6 +1,8 @@
 package com.hiddensound.Presenter;
 
 import android.Manifest;
+
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -8,32 +10,43 @@ import android.util.Log;
 
 import com.hiddensound.qrcodescanner.LoginActivity;
 import com.hiddensound.qrcodescanner.LoginInterface;
+import com.hiddensound.model.*;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 
 /**
  * Created by Zane on 2/26/2017.
  */
 
 public class LoginPresenter implements LoginPresenterInterface {
-
-    private HashMap<String, String> userTable;
+    private HiddenModel hiddenModel;
+    private ModelInterface localModal;
     private JSONParse jsonParser;
     private String tokenresponse;
     private HttpHelperClient httphelper;
     private LoginInterface activity;
+    private TokenHelper tokenHelper;
 
     private LoginActivity act;
 
-    public LoginPresenter(LoginActivity loginActivity){
+    public LoginPresenter(LoginActivity loginActivity, Context context){
+        this.tokenHelper = new TokenHelper(this, context);
         httphelper = new HttpHelperClient();
         activity = loginActivity;
         jsonParser = new JSONParse();
+        localModal = new ModelController();
+
     }
 
 
+
+
     @Override
-    public void checklogin(String UserName, String Password) {
+    public void checkLogin(String UserName, String Password) {
         activity.showPB();
 
         httphelper.requestToken(UserName, Password, new Callback<Integer>(){
@@ -41,9 +54,10 @@ public class LoginPresenter implements LoginPresenterInterface {
             public void onResponse(Integer integer) {
                 if(httphelper.getResponse()>0){
                 tokenresponse = httphelper.getTokenstring();
-                userTable = jsonParser.parseJson(tokenresponse);
-                activity.callmain();}
-                else {
+                hiddenModel = jsonParser.parseJson(tokenresponse);
+                tokenHelper.tokenStore(hiddenModel);
+                activity.callmain();
+                } else {
                     Log.e("fudge", "up");
                     activity.setToast("Invalid username and/or password.");
                 }
@@ -55,7 +69,7 @@ public class LoginPresenter implements LoginPresenterInterface {
 //            if (httphelper.getResponse() > 0) {
 //                //Tell login activity to call main activity
 //                tokenresponse = httphelper.getTokenstring();
-//                userTable = jsonParser.parseJson(tokenresponse);
+//                hiddenModel = jsonParser.parseJson(tokenresponse);
 //                activity.callmain();
 //
 //
@@ -81,5 +95,14 @@ public class LoginPresenter implements LoginPresenterInterface {
 
     }
 
+    public void checkTokenValid() {
+        hiddenModel = tokenHelper.tokenRetrieve();
+        long expireTime = hiddenModel.getTokenTime();
+        long currentTime = System.currentTimeMillis();
+
+
+        if(currentTime < expireTime && expireTime!=0)
+            activity.callmain();
+    }
 }
 

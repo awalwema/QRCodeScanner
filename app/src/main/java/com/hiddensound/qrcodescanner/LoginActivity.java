@@ -18,8 +18,7 @@ import android.widget.Toast;
 
 import com.hiddensound.Presenter.LoginPresenter;
 import com.hiddensound.Presenter.LoginPresenterInterface;
-
-
+import com.hiddensound.Presenter.TokenHelper;
 
 
 //import android.support.design.widget.FloatingActionButton;
@@ -27,6 +26,7 @@ import com.hiddensound.Presenter.LoginPresenterInterface;
 
 public class LoginActivity extends AppCompatActivity implements LoginInterface{
     LoginPresenterInterface loginPresenter;
+
 
     EditText UserIDView;
     EditText UserPassView;
@@ -36,6 +36,7 @@ public class LoginActivity extends AppCompatActivity implements LoginInterface{
     private static final int REQUEST_PHONE_STATE = 1;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,8 +44,13 @@ public class LoginActivity extends AppCompatActivity implements LoginInterface{
         UserIDView = (EditText) findViewById(R.id.UserID);
         UserPassView = (EditText) findViewById(R.id.UserPass);
         checkBar = (ProgressBar) findViewById(R.id.pbbar);
-        loginPresenter = new LoginPresenter(this);
+        loginPresenter = new LoginPresenter(this, getApplicationContext());
+        loginPresenter.checkTokenValid();
         loginPresenter.checkPhoneState(this, REQUEST_PHONE_STATE);
+
+
+
+
 
     }
 
@@ -53,7 +59,7 @@ public class LoginActivity extends AppCompatActivity implements LoginInterface{
         //function in the activity that corresponds to the layout button
         UserID = UserIDView.getText().toString();
         UserPass = UserPassView.getText().toString();
-        loginPresenter.checklogin(UserID, UserPass);
+        loginPresenter.checkLogin(UserID, UserPass);
     }
 
     public void setToast(String msg){
@@ -73,6 +79,7 @@ public class LoginActivity extends AppCompatActivity implements LoginInterface{
 
     public void startRegisterActivity(View v) {
         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://dev-hiddensound.azurewebsites.net/register")));
+
     }
 
     public void startFeaturesActivity(View v) {
@@ -100,6 +107,9 @@ public class LoginActivity extends AppCompatActivity implements LoginInterface{
                 super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
+
+
+
 }
 
 

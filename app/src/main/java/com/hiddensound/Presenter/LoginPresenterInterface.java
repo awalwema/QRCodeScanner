@@ -1,5 +1,6 @@
 package com.hiddensound.Presenter;
 
+
 import com.hiddensound.qrcodescanner.LoginActivity;
 
 /**
@@ -7,9 +8,9 @@ import com.hiddensound.qrcodescanner.LoginActivity;
  */
 
 public interface LoginPresenterInterface {
-    void checklogin(String UserName, String Password);
+    void checkLogin(String UserName, String Password);
     void checkPhoneState(LoginActivity act, int RPS);
+    void checkTokenValid();
     //void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults);
-
 
 }

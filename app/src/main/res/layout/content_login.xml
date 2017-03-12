@@ -37,7 +37,7 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:layout_marginLeft="20dp"
             android:layout_marginStart="20dp"
             android:textColor="#be000000"
@@ -52,6 +52,7 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="sans-serif"
             android:layout_marginLeft="20dp"
             android:layout_marginStart="20dp"
             android:textSize="20sp"
@@ -68,6 +69,7 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="sans-serif"
             android:background="#00000000"
             android:textColor="#be000000"
             android:textStyle="bold"
