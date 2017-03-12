@@ -9,7 +9,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:background="@drawable/hiddensound"
+    android:background="@color/colorPrimary"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.hiddensound.qrcodescanner.LoginActivity"
     tools:showIn="@layout/activity_login">
@@ -19,84 +19,80 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="10dp"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="94dp"
+        android:layout_marginBottom="36dp"
+        android:weightSum="1"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true">
-
-        <TextView
+        <ImageView
+            android:id="@+id/imageView1"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/app_name"
-            android:typeface="sans"
-            android:textSize="35sp"
-            android:textColor="#be000000"
-            android:textStyle="bold"
-            android:gravity="center" />
+            android:layout_height="87dp"
+            android:src="@drawable/hiddensoundtitle"
+            android:layout_weight="0.54"
+            android:contentDescription=""
+            tools:ignore="ContentDescription" />
 
         <EditText
+            android:id="@+id/UserID"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginStart="20dp"
-            android:textColor="#be000000"
-            android:textStyle="bold"
-            android:textColorHint="#be000000"
-            android:background="#00000000"
-            android:padding="10dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/back"
             android:hint="@string/Username"
-            android:textSize="20sp"
-            android:id="@+id/UserID" />
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif"
-            android:layout_marginLeft="20dp"
-            android:layout_marginStart="20dp"
-            android:textSize="20sp"
-            android:hint="@string/Password"
+            android:maxLines="1"
+            android:padding="10dp"
             android:textColor="#be000000"
             android:textColorHint="#be000000"
-            android:textStyle="bold"
-            android:background="#00000000"
-            android:padding="10dp"
-            android:inputType="textPassword"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/UserPass"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:id="@+id/UserPass" />
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:background="@drawable/back"
             android:fontFamily="sans-serif"
-            android:background="#00000000"
-            android:textColor="#be000000"
-            android:textStyle="bold"
-            android:textSize="20sp"
+            android:hint="@string/Password"
+            android:inputType="textPassword"
             android:padding="10dp"
-            android:layout_marginTop="10dp"
-            android:id="@+id/Login"
-            android:text="@string/Login"
-            android:onClick="onClickLogin"/>
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#00000000"
             android:textColor="#be000000"
-            android:textStyle="bold"
+            android:textColorHint="#be000000"
             android:textSize="20sp"
-            android:padding="10dp"
-            android:layout_marginTop="10dp"
-            android:id="@+id/btnRegister"
-            android:text="@string/Register"
-            android:onClick="startRegisterActivity"/>
+            android:textStyle="bold" />
 
         <Button
+            android:id="@+id/Login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/loginbutton"
+            android:fontFamily="sans-serif"
+            android:onClick="onClickLogin"
+            android:padding="10dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/Login"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+        <Button
+            android:id="@+id/btnRegister"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/signupbutton"
+            android:fontFamily="sans-serif"
+            android:onClick="onClickLogin"
+            android:padding="10dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/Register"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+        <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#00000000"
-            android:textColor="#be000000"
+            android:textColor="#000000"
 
             android:textStyle="bold"
             android:textSize="20sp"
