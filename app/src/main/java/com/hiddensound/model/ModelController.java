@@ -8,7 +8,7 @@ public class ModelController implements ModelInterface {
     private long tokenTime = 0;
     private  String imei = null;
     private String qrMemo = null;
-    private String userName = null;
+    private String appName = null;
     private String token = null;
 
     @Override
@@ -27,8 +27,8 @@ public class ModelController implements ModelInterface {
     }
 
     @Override
-    public void setUser(String user) {
-        this.userName = user;
+    public void setAppName(String appName) {
+        this.appName = appName;
     }
 
     @Override
@@ -38,7 +38,7 @@ public class ModelController implements ModelInterface {
 
     @Override
     public HiddenModel create() {
-        return new HiddenModel(imei, qrMemo, userName, token, tokenTime);
+        return new HiddenModel(imei, qrMemo, appName, token, tokenTime);
     }
 
     @Override
@@ -47,8 +47,8 @@ public class ModelController implements ModelInterface {
             imei = hiddenModel.getIMEI();
         if(qrMemo == null)
             qrMemo = hiddenModel.getQRMemo();
-        if(userName == null)
-            userName = hiddenModel.getUser();
+        if(appName == null)
+            appName = hiddenModel.getAppName();
         if(token == null)
             token = hiddenModel.getToken();
         if(tokenTime == 0)

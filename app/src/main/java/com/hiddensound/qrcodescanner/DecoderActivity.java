@@ -1,9 +1,12 @@
 package com.hiddensound.qrcodescanner;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.PointF;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.StringDef;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.telephony.TelephonyManager;
@@ -13,16 +16,22 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dlazaro66.qrcodereaderview.QRCodeReaderView;
+import com.hiddensound.Presenter.DecoderPresenter;
+import com.hiddensound.Presenter.DecoderPresenterInterface;
+import com.hiddensound.model.HiddenModel;
+import com.hiddensound.model.ModelController;
+import com.hiddensound.model.ModelInterface;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
-public class DecoderActivity extends AppCompatActivity implements QRCodeReaderView.OnQRCodeReadListener{
+public class DecoderActivity extends AppCompatActivity implements QRCodeReaderView.OnQRCodeReadListener,
+        DecoderInterface{
     private static final String TAG = "DecoderActivity";
-    private TextView resultTextView;
     private QRCodeReaderView mydecoderview;
-
     private SlidingUpPanelLayout mLayout;
-    TextView mainText;
-    TextView bottomSlider;
+    private TextView bottomSlider;
+    private ModelInterface localModel;
+    private DecoderPresenterInterface pDecoder;
+    private static final int REQUEST_CAMERA = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,14 +40,18 @@ public class DecoderActivity extends AppCompatActivity implements QRCodeReaderVi
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
+        localModel = new ModelController();
+
+        Bundle bundle = this.getIntent().getExtras();
+        if(bundle != null)
+        {
+            localModel.setToken(bundle.getString("hModelT"));
+            localModel.setTokenTime(bundle.getLong("hModelTT"));
+            localModel.setIMEI(bundle.getString("hModelI"));
+        }
+
+        pDecoder = new DecoderPresenter(localModel.create(), this);
+        pDecoder.checkPermissions(this, REQUEST_CAMERA);
 
         mydecoderview = (QRCodeReaderView) findViewById(R.id.qrdecoderview);
         mydecoderview.setOnQRCodeReadListener(this);
@@ -51,21 +64,16 @@ public class DecoderActivity extends AppCompatActivity implements QRCodeReaderVi
 
         mydecoderview.setBackCamera();
 
-        inti();
-
+        mLayout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
+        bottomSlider = (TextView) findViewById(R.id.slider);
+        mLayout.setPanelSlideListener(onSlideListener());
+        mLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
     }
 
     @Override
     public void onQRCodeRead(String text, PointF[] points) {
         mydecoderview.stopCamera();
-        Log.w("handleResult", text);
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Scan result");
-//        model.setQRMemo(result.getText());
-        builder.setMessage(text);
-        AlertDialog alertDialog = builder.create();
-        alertDialog.show();
-
+        pDecoder.onQRCodeRead(text, points);
     }
 
     @Override
@@ -80,12 +88,29 @@ public class DecoderActivity extends AppCompatActivity implements QRCodeReaderVi
         mydecoderview.stopCamera();
     }
 
-    public void inti() {
-        mLayout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
-        mainText = (TextView) findViewById(R.id.main_back);
-        bottomSlider = (TextView) findViewById(R.id.slider);
+    @Override
+    public Object getSystemService(@NonNull String name) {
+        return super.getSystemService(name);
+    }
 
-        mLayout.setPanelSlideListener(onSlideListener());
+    @Override
+    public Context getContext() {
+        return this;
+    }
+
+    @Override
+    public Activity getActivity() {
+        return this;
+    }
+
+    @Override
+    public void setAppName(String appName) {
+        bottomSlider.setText(appName);
+    }
+
+    @Override
+    public void expandSlideUp() {
+        mLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
     }
 
     private SlidingUpPanelLayout.PanelSlideListener onSlideListener() {
@@ -94,49 +119,39 @@ public class DecoderActivity extends AppCompatActivity implements QRCodeReaderVi
             @Override
             public void onPanelSlide(View panel, float slideOffset) {
                 Log.e(TAG, "onPanelSlide, offset " + slideOffset);
-                mainText.setText("onPanelSlide");
-                bottomSlider.setText("onPanelSlide");
             }
 
             @Override
             public void onPanelCollapsed(View panel) {
                 Log.e(TAG, "onPanelCollapse");
-                mainText.setText("onPanelCollapse");
-                bottomSlider.setText("onPanelCollapse");
+                mydecoderview.startCamera();
             }
 
             @Override
             public void onPanelExpanded(View panel) {
                 Log.e(TAG, "onPanelExpand");
-                mainText.setText("onPanelExpand");
-                bottomSlider.setText("onPanelExpand");
             }
 
             @Override
             public void onPanelAnchored(View panel) {
                 Log.e(TAG, "onPanelAnchor");
-                mainText.setText("onPanelAnchor");
-                bottomSlider.setText("onPanelAnchor");
             }
 
             @Override
             public void onPanelHidden(View panel) {
                 Log.e(TAG, "onPanelHide");
-                mainText.setText("onPanelHide");
-                bottomSlider.setText("onPanelHide");
             }
         };
     }
 
-    public void onClickIMEI(View v) {
-        //try {
+    public void onReject(View v) {
         TelephonyManager tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
         Toast.makeText(DecoderActivity.this, tm.getDeviceId(), Toast.LENGTH_SHORT)
                 .show();
+        mydecoderview.startCamera();
     }
 
-    public void onClickCamera(View v) {
-        //try {
-        mydecoderview.startCamera();
+    public void onAccept(View v) {
+        pDecoder.Approve();
     }
 }

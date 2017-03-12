@@ -4,7 +4,6 @@ package com.hiddensound.qrcodescanner;
  * Created by Andrew on 2/4/2017.
  */
 
-
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -19,47 +18,33 @@ import android.widget.Toast;
 import com.hiddensound.Presenter.LoginPresenter;
 import com.hiddensound.Presenter.LoginPresenterInterface;
 import com.hiddensound.Presenter.TokenHelper;
-
-
-//import android.support.design.widget.FloatingActionButton;
-//import android.support.design.widget.Snackbar;
+import com.hiddensound.model.HiddenModel;
 
 public class LoginActivity extends AppCompatActivity implements LoginInterface{
-    LoginPresenterInterface loginPresenter;
-
-
-    EditText UserIDView;
-    EditText UserPassView;
-    String UserID;
-    String UserPass;
-    ProgressBar checkBar;
+    private LoginPresenterInterface loginPresenter;
+    private EditText UserIDView;
+    private EditText UserPassView;
+    private ProgressBar checkBar;
     private static final int REQUEST_PHONE_STATE = 1;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
         UserIDView = (EditText) findViewById(R.id.UserID);
         UserPassView = (EditText) findViewById(R.id.UserPass);
         checkBar = (ProgressBar) findViewById(R.id.pbbar);
+
         loginPresenter = new LoginPresenter(this, getApplicationContext());
         loginPresenter.checkTokenValid();
         loginPresenter.checkPhoneState(this, REQUEST_PHONE_STATE);
-
-
-
-
-
     }
 
     public void onClickLogin(View v) {
-
         //function in the activity that corresponds to the layout button
-        UserID = UserIDView.getText().toString();
-        UserPass = UserPassView.getText().toString();
-        loginPresenter.checkLogin(UserID, UserPass);
+        loginPresenter.checkLogin(UserIDView.getText().toString(), UserPassView.getText().toString());
+//        loginPresenter.checkPhonePair();
     }
 
     public void setToast(String msg){
@@ -87,8 +72,14 @@ public class LoginActivity extends AppCompatActivity implements LoginInterface{
     }
 
     @Override
-    public void callmain() {
-        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+    public void callDecoder(HiddenModel hiddenModel) {
+        Intent intent = new Intent(LoginActivity.this, DecoderActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("hModelT", hiddenModel.getToken());
+        bundle.putLong("hModelTT", hiddenModel.getTokenTime());
+        bundle.putSerializable("hModelI", hiddenModel.getIMEI());
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 
     @Override
@@ -107,9 +98,6 @@ public class LoginActivity extends AppCompatActivity implements LoginInterface{
                 super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
-
-
-
 }
 
 

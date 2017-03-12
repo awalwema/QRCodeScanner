@@ -3,20 +3,16 @@ package com.hiddensound.Presenter;
 import android.Manifest;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 
 import com.hiddensound.qrcodescanner.LoginActivity;
 import com.hiddensound.qrcodescanner.LoginInterface;
 import com.hiddensound.model.*;
-
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Locale;
 
 /**
  * Created by Zane on 2/26/2017.
@@ -31,19 +27,13 @@ public class LoginPresenter implements LoginPresenterInterface {
     private LoginInterface activity;
     private TokenHelper tokenHelper;
 
-    private LoginActivity act;
-
     public LoginPresenter(LoginActivity loginActivity, Context context){
         this.tokenHelper = new TokenHelper(this, context);
         httphelper = new HttpHelperClient();
         activity = loginActivity;
         jsonParser = new JSONParse();
         localModal = new ModelController();
-
     }
-
-
-
 
     @Override
     public void checkLogin(String UserName, String Password) {
@@ -54,9 +44,9 @@ public class LoginPresenter implements LoginPresenterInterface {
             public void onResponse(Integer integer) {
                 if(httphelper.getResponse()>0){
                 tokenresponse = httphelper.getTokenstring();
-                hiddenModel = jsonParser.parseJson(tokenresponse);
+                hiddenModel = localModal.create(jsonParser.parseJson4Login(tokenresponse));
                 tokenHelper.tokenStore(hiddenModel);
-                activity.callmain();
+                activity.callDecoder(hiddenModel);
                 } else {
                     Log.e("fudge", "up");
                     activity.setToast("Invalid username and/or password.");
@@ -65,44 +55,39 @@ public class LoginPresenter implements LoginPresenterInterface {
                 activity.hidePB();
             }
         });
-//            httphelper.setResponseValid(false);
-//            if (httphelper.getResponse() > 0) {
-//                //Tell login activity to call main activity
-//                tokenresponse = httphelper.getTokenstring();
-//                hiddenModel = jsonParser.parseJson(tokenresponse);
-//                activity.callmain();
-//
-//
-//            } else if (httphelper.getResponse() < 0) {
-//                activity.setToast("Invalid username or password.");
-//
-//            }
-        }
+    }
 
     @Override
     public void checkPhoneState(LoginActivity act, int REQUEST_PHONE_STATE) {
-
-        this.act = act;
         int hasPhoneStatePermission = ContextCompat.checkSelfPermission(act, Manifest.permission.READ_PHONE_STATE);
-
 
         if (hasPhoneStatePermission != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(act,
                     new String[]{Manifest.permission.READ_PHONE_STATE},
                     REQUEST_PHONE_STATE);
-
         }
-
     }
 
     public void checkTokenValid() {
-        hiddenModel = tokenHelper.tokenRetrieve();
+        hiddenModel = localModal.create(tokenHelper.tokenRetrieve());
         long expireTime = hiddenModel.getTokenTime();
         long currentTime = System.currentTimeMillis();
 
-
         if(currentTime < expireTime && expireTime!=0)
-            activity.callmain();
+            activity.callDecoder(hiddenModel);
+    }
+
+    @Override
+    public void checkPhonePair() {
+        TelephonyManager tm = (TelephonyManager) activity.getSystemService(Context.TELEPHONY_SERVICE);
+        localModal.setIMEI(tm.toString());
+        hiddenModel = localModal.create(hiddenModel);
+        httphelper.requestPhonePair(hiddenModel, new Callback<Integer>() {
+            @Override
+            public void onResponse(Integer integer) {
+                //handle response
+            }
+        });
     }
 }
 

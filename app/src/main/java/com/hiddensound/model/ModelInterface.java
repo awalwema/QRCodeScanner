@@ -9,7 +9,7 @@ public interface ModelInterface {
     void setTokenTime (long tokenTime);
     void setIMEI(String imei);
     void setQRMemo(String  qrMemo);
-    void setUser(String user);
+    void setAppName(String user);
     void setToken(String token);
     HiddenModel create();
     HiddenModel create(HiddenModel hiddenModel);

@@ -1,7 +1,5 @@
 package com.hiddensound.model;
 
-import android.support.annotation.Nullable;
-
 /**
  * Created by amarques on 2/11/2017.
  */
@@ -10,13 +8,13 @@ public class HiddenModel {
     private final long TOKENTIME;
     private final String IMEI;
     private final String QRMEMO;
-    private final String USERNAME;
+    private final String APPNAME;
     private final String TOKEN;
 
-    public HiddenModel(String imei, String qrMemo, String userName, String token, long tokenTime){
+    public HiddenModel(String imei, String qrMemo, String appName, String token, long tokenTime){
         IMEI = imei;
         QRMEMO = qrMemo;
-        USERNAME = userName;
+        APPNAME = appName;
         TOKEN = token;
         TOKENTIME = tokenTime;
     }
@@ -33,8 +31,8 @@ public class HiddenModel {
         return QRMEMO;
     }
 
-    public String getUser() {
-        return USERNAME;
+    public String getAppName() {
+        return APPNAME;
     }
 
     public String getToken() {

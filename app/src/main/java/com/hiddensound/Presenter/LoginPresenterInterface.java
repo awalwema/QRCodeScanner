@@ -11,6 +11,7 @@ public interface LoginPresenterInterface {
     void checkLogin(String UserName, String Password);
     void checkPhoneState(LoginActivity act, int RPS);
     void checkTokenValid();
+    void checkPhonePair();
     //void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults);
 
 }

@@ -1,5 +1,8 @@
 package com.hiddensound.Presenter;
 
+import android.content.Intent;
+
+import com.hiddensound.model.HiddenModel;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
@@ -11,6 +14,7 @@ import cz.msebera.android.httpclient.Header;
  */
 
 public class HttpHelperClient {
+    private static final String MAINULR = "https://dev-api-hiddensound.azurewebsites.net";
     private String tokenstring;
     private AsyncHttpClient client;
     private RequestParams params;
@@ -22,6 +26,52 @@ public class HttpHelperClient {
 
     }
 
+    public void requestPhonePair(HiddenModel hiddenModel, final Callback<Integer> callback)
+    {
+        params.put("imei",hiddenModel.getIMEI());
+        client.addHeader("Content-Type", "application/x-www-form-urlencoded");
+        client.addHeader("Token", hiddenModel.getToken());
+        client.post(MAINULR + "/Mobile/Devices/Check", params, new TextHttpResponseHandler() {
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString,
+                                  Throwable throwable) {
+                if(callback != null){
+                    callback.onResponse(statusCode);
+                }
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                if(callback != null){
+                    callback.onResponse(statusCode);
+                }
+            }
+        });
+    }
+
+    public void postApproval(HiddenModel hiddenModel, final Callback<Integer> callback){
+        params.put("authorizationCode", hiddenModel.getQRMemo());
+        params.put("imei", hiddenModel.getIMEI());
+        client.addHeader("Contt-Type", "application/x-www-form-urlencoded");
+        client.addHeader("token", hiddenModel.getToken());
+        client.post(MAINULR + "/Mobile/Trasaction/Authorize", params, new TextHttpResponseHandler() {
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString,
+                                  Throwable throwable) {
+                if(callback != null){
+                    callback.onResponse(statusCode);
+                }
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                if(callback != null){
+                    callback.onResponse(statusCode);
+                }
+            }
+        });
+    }
+
     public void requestToken(String UserID, String UserPass, final Callback<Integer> callback) {
         try {
             params.put("username", UserID);
@@ -30,8 +80,7 @@ public class HttpHelperClient {
             params.put("client_id", "a5U4DvFf3r2N9Kg");
             client.addHeader("Content-Type", "application/x-www-form-urlencoded");
 
-            client.post("https://dev-api-hiddensound.azurewebsites.net/OAuth/Token", params,
-                    new TextHttpResponseHandler() {
+            client.post(MAINULR + "/OAuth/Token", params, new TextHttpResponseHandler() {
                     @Override
                     public void onFailure(int statusCode, Header[] headers, String responseString,
                                           Throwable throwable) {
@@ -45,60 +94,37 @@ public class HttpHelperClient {
 
                     }
 
+                    @Override
+                    public void onFinish() {
+                        super.onFinish();
 
-                        @Override
-                        public void onFinish() {
-                            super.onFinish();
-
-                            if(callback != null){
-                                callback.onResponse(1);
-                            }
+                        if(callback != null){
+                            callback.onResponse(1);
                         }
+                    }
 
-                        @Override
+                    @Override
                     public void onSuccess(int statusCode, Header[] headers, String responseString) {
                         response = 1;
                         tokenstring = responseString;
                     }
-
-
-
-//                    @Override
-//                    public void onSuccess(int statusCode, PreferenceActivity.Header[] headers, String res) {
-//                        // called when response HTTP status is "200 OK"
-////                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
-//
-//                    }
-//
-//                    @Override
-//                    public void onFailure(int statusCode, PreferenceActivity.Header[] headers, String res, Throwable t) {
-////                        Toast.makeText(getApplicationContext(), "Error: " + statusCode, Toast.LENGTH_SHORT).show();
-//                        // called when response HTTP status is "4XX" (eg. 401, 403, 404)
-//
-////                        startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
-//                    }
-                    }
+                }
             );
-            if (response == 1) {
-                return;
-
-            }
         } catch (Exception e) {
 
         }
-
-
-//        return response;
     }
+
     public String getTokenstring() {
         return tokenstring;
     }
-
 
     public int getResponse()
     {
         return response;
     }
+
+
 
 }
 

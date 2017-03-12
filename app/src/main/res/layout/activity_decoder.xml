@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -22,14 +23,6 @@
 
     <include layout="@layout/content_decoder" />
 
-    <!--<android.support.design.widget.FloatingActionButton-->
-        <!--android:id="@+id/fab"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_gravity="bottom|end"-->
-        <!--android:layout_margin="@dimen/fab_margin"-->
-        <!--app:srcCompat="@android:drawable/ic_dialog_email" />-->
-
     <com.sothree.slidinguppanel.SlidingUpPanelLayout
         xmlns:sothree="http://schemas.android.com/apk/res-auto"
         android:id="@+id/sliding_layout"
@@ -38,23 +31,14 @@
         android:gravity="bottom"
         sothree:umanoDragView="@+id/dragView"
         sothree:umanoOverlay="true"
-        sothree:umanoPanelHeight="68dp"
+        sothree:umanoPanelHeight="0dp"
         sothree:umanoParalaxOffset="100dp"
-        sothree:umanoShadowHeight="4dp">
+        sothree:umanoShadowHeight="0dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="Main Content"
-                android:textSize="16sp"
-                android:id="@+id/main_back"/>
-        </LinearLayout>
+            android:orientation="horizontal"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -68,22 +52,23 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center|top"
-                android:text="The Awesome Sliding Up Panel"
+                android:text="@string/slideMessage"
                 android:textSize="16sp"
                 android:id="@+id/slider"/>
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Scan QR Code"
-                android:onClick="onClickCamera"
-                android:id="@+id/camera" />
 
             <Button
-                android:text="Show IMEI"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:onClick="onClickIMEI"
-                android:id="@+id/IMEI" />
+                android:text="@string/Accept"
+                android:onClick="onAccept"
+                android:id="@+id/Accept" />
+
+            <Button
+                android:text="@string/Reject"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="onReject"
+                android:id="@+id/Reject" />
         </LinearLayout>
     </com.sothree.slidinguppanel.SlidingUpPanelLayout>
 

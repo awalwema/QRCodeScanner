@@ -7,5 +7,8 @@
     <string name="Go_to_Features">Features</string>
     <string name="Password">Password</string>
     <string name="Username">Username</string>
+    <string name="slideMessage">Do you wish to proceed?</string>
+    <string name="Accept">Accept</string>
+    <string name="Reject">Reject</string>
     <string name="title_activity_decoder">DecoderActivity</string>
 </resources>

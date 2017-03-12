@@ -15,10 +15,11 @@
         sothree:umanoParalaxOffset="100dp"
         sothree:umanoShadowHeight="4dp">
 
-        <LinearLayout
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:id="@+id/mainFrame">
 
             <TextView
                 android:layout_width="match_parent"
@@ -27,7 +28,7 @@
                 android:text="Main Content"
                 android:textSize="16sp"
                 android:id="@+id/main_back"/>
-        </LinearLayout>
+        </FrameLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -44,18 +45,12 @@
                 android:text="The Awesome Sliding Up Panel"
                 android:textSize="16sp"
                 android:id="@+id/slider"/>
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Scan QR Code"
-                android:onClick="onClickCamera"
-                android:id="@+id/camera" />
 
             <Button
                 android:text="Show IMEI"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:onClick="onClickIMEI"
+                android:onClick="onReject"
                 android:id="@+id/IMEI" />
         </LinearLayout>
     </com.sothree.slidinguppanel.SlidingUpPanelLayout>

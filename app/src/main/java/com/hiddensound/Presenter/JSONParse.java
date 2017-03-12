@@ -9,37 +9,45 @@ import com.hiddensound.model.HiddenModel;
 import com.hiddensound.model.ModelController;
 import com.hiddensound.model.ModelInterface;
 
-import java.util.HashMap;
-
 class JSONParse {
     private ModelInterface localModel;
+    private JsonParser parser;
+    private JsonElement jsonTree;
+    private JsonObject jsonObject;
+    private JsonElement jsonElement;
 
-    HiddenModel parseJson(String jsonElement) {
-//        HashMap<String, String> jsonResult = new HashMap<>();
-        JsonParser parser = new JsonParser();
-        JsonElement jsonTree = parser.parse(jsonElement);
+    public JSONParse(){
+        localModel = new ModelController();
+        parser = new JsonParser();
+    }
+
+    public HiddenModel parseJson4Login(String JSON) {
+        jsonTree = parser.parse(JSON);
+
         if (jsonTree.isJsonObject()) {
+            jsonObject = jsonTree.getAsJsonObject();
+            jsonElement = jsonObject.get("access_token");
+            localModel.setToken(jsonElement.toString());
 
-
-            JsonObject jsonObject = jsonTree.getAsJsonObject();
-//            JsonElement tokenType = jsonObject.get("token_type");
-            JsonElement token = jsonObject.get("access_token");
-            JsonElement expiresIn = jsonObject.get("expires_in");
-//            jsonResult.put("tokenType", tokenType.toString());
-//            jsonResult.put("token", token.toString());
-//            jsonResult.put("expiresIn", expiresIn.toString());
-            localModel = new ModelController();
-            localModel.setToken(token.toString());
-            localModel.setTokenTime(Long.parseLong(expiresIn.toString()));
-
-
-
-
-
+            jsonElement = jsonObject.get("expires_in");
+            localModel.setTokenTime(Long.parseLong(jsonElement.toString()));
         }
-//        return jsonResult;
         return localModel.create();
+    }
 
+    public HiddenModel parseJson4Decoder(String QRMemo){
+        jsonTree = parser.parse(QRMemo);
+
+        if(jsonTree.isJsonObject()){
+            jsonObject = jsonTree.getAsJsonObject();
+            jsonElement = jsonObject.get("applicationName");
+            localModel.setAppName(jsonElement.toString());
+
+            jsonElement = jsonObject.get("authorizationCode");
+            localModel.setQRMemo(jsonElement.toString());
+        }
+
+        return localModel.create();
     }
 
 }
