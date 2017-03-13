@@ -44,7 +44,7 @@ public class LoginActivity extends AppCompatActivity implements LoginInterface{
     public void onClickLogin(View v) {
         //function in the activity that corresponds to the layout button
         loginPresenter.checkLogin(UserIDView.getText().toString(), UserPassView.getText().toString());
-//        loginPresenter.checkPhonePair();
+        loginPresenter.checkPhonePair();
     }
 
     public void setToast(String msg){

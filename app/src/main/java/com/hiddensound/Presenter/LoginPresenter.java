@@ -86,6 +86,8 @@ public class LoginPresenter implements LoginPresenterInterface {
             @Override
             public void onResponse(Integer integer) {
                 //handle response
+                if(integer == 404)
+                    activity.setToast("Bad Request");
             }
         });
     }

@@ -40,6 +40,8 @@ public class DecoderPresenter implements DecoderPresenterInterface {
             @Override
             public void onResponse(Integer integer) {
                 //handle approval response
+                if(integer == 404)
+                    dActivity.setToast("Bad Request");
             }
         });
     }

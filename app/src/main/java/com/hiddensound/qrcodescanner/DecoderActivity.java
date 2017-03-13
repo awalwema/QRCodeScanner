@@ -61,7 +61,6 @@ public class DecoderActivity extends AppCompatActivity implements QRCodeReaderVi
 
         //function to change the autofocus interval
         mydecoderview.setAutofocusInterval(2000L);
-
         mydecoderview.setBackCamera();
 
         mLayout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
@@ -94,6 +93,11 @@ public class DecoderActivity extends AppCompatActivity implements QRCodeReaderVi
     }
 
     @Override
+    public void setToast(String msg) {
+        Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
     public Context getContext() {
         return this;
     }
@@ -105,7 +109,7 @@ public class DecoderActivity extends AppCompatActivity implements QRCodeReaderVi
 
     @Override
     public void setAppName(String appName) {
-        bottomSlider.setText(appName);
+        bottomSlider.setText(bottomSlider.getText().toString().replace("X", appName));
     }
 
     @Override
@@ -124,7 +128,6 @@ public class DecoderActivity extends AppCompatActivity implements QRCodeReaderVi
             @Override
             public void onPanelCollapsed(View panel) {
                 Log.e(TAG, "onPanelCollapse");
-                mydecoderview.startCamera();
             }
 
             @Override
@@ -145,10 +148,8 @@ public class DecoderActivity extends AppCompatActivity implements QRCodeReaderVi
     }
 
     public void onReject(View v) {
-        TelephonyManager tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-        Toast.makeText(DecoderActivity.this, tm.getDeviceId(), Toast.LENGTH_SHORT)
-                .show();
         mydecoderview.startCamera();
+        mLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
     }
 
     public void onAccept(View v) {

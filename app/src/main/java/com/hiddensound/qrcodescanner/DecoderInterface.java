@@ -12,7 +12,7 @@ import java.util.StringTokenizer;
  */
 
 public interface DecoderInterface {
-    Object getSystemService(String Name);
+    void setToast(String msg);
     Context getContext();
     Activity getActivity();
     void setAppName(String appName);

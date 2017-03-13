@@ -53,22 +53,41 @@
                 android:layout_height="match_parent"
                 android:gravity="center|top"
                 android:text="@string/slideMessage"
-                android:textSize="16sp"
+                android:textSize="20sp"
+                android:textColor="#000000"
+                android:fontFamily="sans-serif"
+                android:textStyle="bold"
+                android:textAllCaps="false"
                 android:id="@+id/slider"/>
 
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/Accept"
+                android:text="@string/Authorize"
                 android:onClick="onAccept"
-                android:id="@+id/Accept" />
+                android:id="@+id/Accept"
+                android:padding="10dp"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/colorPrimary"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textAllCaps="false"
+                android:background="@drawable/loginbutton"
+                android:fontFamily="sans-serif"/>
 
             <Button
-                android:text="@string/Reject"
+                android:text="@string/Decline"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:onClick="onReject"
-                android:id="@+id/Reject" />
+                android:id="@+id/Reject"
+                android:background="@drawable/signupbutton"
+                android:textColor="@color/colorPrimary"
+                android:textAllCaps="false"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:padding="10dp"
+                android:layout_marginTop="10dp"/>
         </LinearLayout>
     </com.sothree.slidinguppanel.SlidingUpPanelLayout>
 
