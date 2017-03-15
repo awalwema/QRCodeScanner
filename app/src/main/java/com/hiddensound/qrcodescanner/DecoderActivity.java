@@ -128,6 +128,7 @@ public class DecoderActivity extends AppCompatActivity implements QRCodeReaderVi
             @Override
             public void onPanelCollapsed(View panel) {
                 Log.e(TAG, "onPanelCollapse");
+                mydecoderview.startCamera();
             }
 
             @Override
@@ -149,6 +150,10 @@ public class DecoderActivity extends AppCompatActivity implements QRCodeReaderVi
 
     public void onReject(View v) {
         mydecoderview.startCamera();
+        mydecoderview.setOnQRCodeReadListener(this);
+        mydecoderview.setQRDecodingEnabled(true);
+        mydecoderview.refreshDrawableState();
+
         mLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
     }
 

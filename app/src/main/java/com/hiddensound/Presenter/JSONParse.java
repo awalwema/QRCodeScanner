@@ -9,7 +9,7 @@ import com.hiddensound.model.HiddenModel;
 import com.hiddensound.model.ModelController;
 import com.hiddensound.model.ModelInterface;
 
-class JSONParse {
+public class JSONParse {
     private ModelInterface localModel;
     private JsonParser parser;
     private JsonElement jsonTree;
