@@ -1,24 +1,17 @@
 package com.hiddensound.Presenter;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.support.v7.app.AppCompatActivity;
 
 import com.hiddensound.model.HiddenModel;
 import com.hiddensound.model.ModelController;
 import com.hiddensound.model.ModelInterface;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-
 
 /**
  * Created by Zane on 3/2/2017.
+ * Test comment;
  */
 
 
@@ -60,9 +53,6 @@ public class TokenHelper implements TokenHelperInterface {
         localModel.setToken(tempToken);
         hiddenModel = localModel.create();
 
-        if (expireTime == 0) {
-
-        }
 
         return hiddenModel;
     }
