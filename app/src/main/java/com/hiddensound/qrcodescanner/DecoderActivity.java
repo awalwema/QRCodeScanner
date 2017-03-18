@@ -3,10 +3,12 @@ package com.hiddensound.qrcodescanner;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.graphics.PointF;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringDef;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.telephony.TelephonyManager;
@@ -16,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dlazaro66.qrcodereaderview.QRCodeReaderView;
+import com.hiddensound.Presenter.Callback;
 import com.hiddensound.Presenter.DecoderPresenter;
 import com.hiddensound.Presenter.DecoderPresenterInterface;
 import com.hiddensound.model.HiddenModel;
@@ -32,6 +35,7 @@ public class DecoderActivity extends AppCompatActivity implements QRCodeReaderVi
     private ModelInterface localModel;
     private DecoderPresenterInterface pDecoder;
     private static final int REQUEST_CAMERA = 0;
+    private Boolean holdTill = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +55,16 @@ public class DecoderActivity extends AppCompatActivity implements QRCodeReaderVi
         }
 
         pDecoder = new DecoderPresenter(localModel.create(), this);
-        pDecoder.checkPermissions(this, REQUEST_CAMERA);
+//        pDecoder.checkPermissions(this, REQUEST_CAMERA);
+        pDecoder.checkPermissions(this, REQUEST_CAMERA, new Callback<Boolean>(){
+
+            @Override
+            public void onResponse(Boolean bb) {
+                if(bb){
+                    holdTill = bb;
+                }
+            }
+        });
 
         mydecoderview = (QRCodeReaderView) findViewById(R.id.qrdecoderview);
         mydecoderview.setOnQRCodeReadListener(this);
@@ -78,7 +91,8 @@ public class DecoderActivity extends AppCompatActivity implements QRCodeReaderVi
     @Override
     protected void onResume(){
         super.onResume();
-        mydecoderview.startCamera();
+        if(holdTill)
+            mydecoderview.startCamera();
     }
 
     @Override
@@ -159,5 +173,22 @@ public class DecoderActivity extends AppCompatActivity implements QRCodeReaderVi
 
     public void onAccept(View v) {
         pDecoder.Approve();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_CAMERA:
+                if(ActivityCompat.checkSelfPermission(this, permissions[0]) == PackageManager.PERMISSION_GRANTED)    {
+                    // Permission Granted
+                    holdTill = false;
+                } else {
+                    // Permission Denied
+                    this.setToast("CAMERA Access Denied");
+                }
+                break;
+            default:
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
     }
 }
