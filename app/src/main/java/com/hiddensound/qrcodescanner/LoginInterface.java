@@ -12,6 +12,8 @@ public interface LoginInterface {
     void showPB();
     void hidePB();
     Object getSystemService(String Name);
+    boolean canAccessCamera();
+    void requestCameraPermission();
 
     void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults);
 }

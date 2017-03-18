@@ -4,12 +4,14 @@ package com.hiddensound.qrcodescanner;
  * Created by Andrew on 2/4/2017.
  */
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -17,7 +19,6 @@ import android.widget.Toast;
 
 import com.hiddensound.Presenter.LoginPresenter;
 import com.hiddensound.Presenter.LoginPresenterInterface;
-import com.hiddensound.Presenter.TokenHelper;
 import com.hiddensound.model.HiddenModel;
 
 public class LoginActivity extends AppCompatActivity implements LoginInterface{
@@ -26,6 +27,7 @@ public class LoginActivity extends AppCompatActivity implements LoginInterface{
     private EditText UserPassView;
     private ProgressBar checkBar;
     private static final int REQUEST_PHONE_STATE = 1;
+    private static final int REQUEST_CAMERA = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +70,12 @@ public class LoginActivity extends AppCompatActivity implements LoginInterface{
     }
 
     public void startFeaturesActivity(View v) {
-        startActivity(new Intent(LoginActivity.this, DecoderActivity.class));
+        if(!canAccessCamera()){
+            requestCameraPermission();
+        } else {
+//start only if permission is granted
+            startActivity(new Intent(LoginActivity.this, DecoderActivity.class));
+        }
     }
 
     @Override
@@ -94,9 +101,44 @@ public class LoginActivity extends AppCompatActivity implements LoginInterface{
                     this.setToast("IMEI Access Denied");
                 }
                 break;
+            case REQUEST_CAMERA:
+                if(ActivityCompat.checkSelfPermission(this, permissions[0]) == PackageManager.PERMISSION_GRANTED)    {
+                    // Permission Granted
+                    startActivity(new Intent(LoginActivity.this, DecoderActivity.class));
+                } else {
+                    // Permission Denied
+                    this.setToast("CAMERA Access Denied");
+                }
+                break;
             default:
                 super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
+    }
+
+    @Override
+    public void requestCameraPermission() {
+
+
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA) || ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)) {
+            Log.d("permissions",
+                    "Displaying camera permission rationale to provide additional context.");
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA, Manifest.permission.CAMERA},
+                    REQUEST_CAMERA);
+
+
+        } else {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA, Manifest.permission.CAMERA},
+                    REQUEST_CAMERA);
+        }
+    }
+
+    @Override
+    public boolean canAccessCamera() {
+        return (hasPermission(Manifest.permission.CAMERA));
+    }
+
+    private boolean hasPermission(String perm) {
+        return(PackageManager.PERMISSION_GRANTED==checkCallingOrSelfPermission(perm));
     }
 }
 

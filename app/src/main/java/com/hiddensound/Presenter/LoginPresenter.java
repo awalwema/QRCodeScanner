@@ -1,18 +1,18 @@
 package com.hiddensound.Presenter;
 
 import android.Manifest;
-
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
+import com.hiddensound.model.HiddenModel;
+import com.hiddensound.model.ModelController;
+import com.hiddensound.model.ModelInterface;
 import com.hiddensound.qrcodescanner.LoginActivity;
 import com.hiddensound.qrcodescanner.LoginInterface;
-import com.hiddensound.model.*;
 
 /**
  * Created by Zane on 2/26/2017.
@@ -26,6 +26,8 @@ public class LoginPresenter implements LoginPresenterInterface {
     private HttpHelperClient httphelper;
     private LoginInterface activity;
     private TokenHelper tokenHelper;
+
+    private static final int REQUEST_CAMERA = 0;
 
     public LoginPresenter(LoginActivity loginActivity, Context context){
         this.tokenHelper = new TokenHelper(this, context);
@@ -46,12 +48,17 @@ public class LoginPresenter implements LoginPresenterInterface {
                 tokenresponse = httphelper.getTokenstring();
                 hiddenModel = localModal.create(jsonParser.parseJson4Login(tokenresponse));
                 tokenHelper.tokenStore(hiddenModel);
-                activity.callDecoder(hiddenModel);
+
+                    if(!activity.canAccessCamera()){
+                        activity.requestCameraPermission();
+                    } else {
+                        //start decoder activity only if permission is granted
+                        activity.callDecoder(hiddenModel);
+                    }
                 } else {
                     Log.e("fudge", "up");
                     activity.setToast("Invalid username and/or password.");
                 }
-
                 activity.hidePB();
             }
         });
@@ -91,5 +98,7 @@ public class LoginPresenter implements LoginPresenterInterface {
             }
         });
     }
+
+
 }
 
