@@ -44,23 +44,17 @@ public class LoginPresenter implements LoginPresenterInterface {
         httphelper.requestToken(UserName, Password, new Callback<Integer>(){
             @Override
             public void onResponse(Integer integer) {
-                if(httphelper.getResponse()>0){
-                tokenresponse = httphelper.getTokenstring();
-                hiddenModel = localModal.create(jsonParser.parseJson4Login(tokenresponse));
-                tokenHelper.tokenStore(hiddenModel);
-
+                if(integer == 200){
+                    tokenresponse = httphelper.getTokenstring();
+                    hiddenModel = localModal.create(jsonParser.parseJson4Login(tokenresponse));
+                    tokenHelper.tokenStore(hiddenModel);
                     if(!activity.canAccessCamera()){
                         activity.requestCameraPermission();
                     } else {
                         //start decoder activity only if permission is granted
                         activity.callDecoder(hiddenModel);
                     }
-                if(integer == 200){
-                    tokenresponse = httphelper.getTokenstring();
-                    hiddenModel = localModal.create(jsonParser.parseJson4Login(tokenresponse));
-                    tokenHelper.tokenStore(hiddenModel);
-                    activity.callDecoder(hiddenModel);
-                    checkPhonePair();
+                    //checkPhonePair();
                 } else {
                     Log.e("fudge", "up");
                     activity.setToast("Invalid username and/or password. Error code:" + integer);
@@ -72,11 +66,11 @@ public class LoginPresenter implements LoginPresenterInterface {
     }
 
     @Override
-    public void checkPhoneState(LoginActivity act, int REQUEST_PHONE_STATE) {
-        int hasPhoneStatePermission = ContextCompat.checkSelfPermission(act, Manifest.permission.READ_PHONE_STATE);
+    public void checkPhoneState(LoginActivity activity, int REQUEST_PHONE_STATE) {
+        int hasPhoneStatePermission = ContextCompat.checkSelfPermission(activity, Manifest.permission.READ_PHONE_STATE);
 
         if (hasPhoneStatePermission != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(act,
+            ActivityCompat.requestPermissions(activity,
                     new String[]{Manifest.permission.READ_PHONE_STATE},
                     REQUEST_PHONE_STATE);
         }

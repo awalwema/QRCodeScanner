@@ -1,27 +1,22 @@
 package com.hiddensound.qrcodescanner;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.PointF;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.StringDef;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dlazaro66.qrcodereaderview.QRCodeReaderView;
-import com.hiddensound.Presenter.Callback;
 import com.hiddensound.Presenter.DecoderPresenter;
 import com.hiddensound.Presenter.DecoderPresenterInterface;
-import com.hiddensound.model.HiddenModel;
 import com.hiddensound.model.ModelController;
 import com.hiddensound.model.ModelInterface;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
@@ -55,16 +50,7 @@ public class DecoderActivity extends AppCompatActivity implements QRCodeReaderVi
         }
 
         pDecoder = new DecoderPresenter(localModel.create(), this);
-//        pDecoder.checkPermissions(this, REQUEST_CAMERA);
-        pDecoder.checkPermissions(this, REQUEST_CAMERA, new Callback<Boolean>(){
 
-            @Override
-            public void onResponse(Boolean bb) {
-                if(bb){
-                    holdTill = bb;
-                }
-            }
-        });
 
         mydecoderview = (QRCodeReaderView) findViewById(R.id.qrdecoderview);
         mydecoderview.setOnQRCodeReadListener(this);
