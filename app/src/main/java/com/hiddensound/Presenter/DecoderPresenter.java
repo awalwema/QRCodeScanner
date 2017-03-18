@@ -1,12 +1,10 @@
 package com.hiddensound.Presenter;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.PointF;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.telephony.TelephonyManager;
 
 import com.hiddensound.model.HiddenModel;
 import com.hiddensound.model.ModelController;
@@ -61,7 +59,7 @@ public class DecoderPresenter implements DecoderPresenterInterface {
     }
 
     @Override
-    public void checkPermissions(DecoderActivity activity, int value) {
+    public void checkPermissions(DecoderActivity activity, int value, Callback<Boolean> callback) {
         int hasCameraPermission = ContextCompat.checkSelfPermission(activity,
                 Manifest.permission.CAMERA);
 
@@ -69,6 +67,11 @@ public class DecoderPresenter implements DecoderPresenterInterface {
             ActivityCompat.requestPermissions(activity,
                     new String[]{Manifest.permission.CAMERA},
                     value);
+        }
+
+        if(hasCameraPermission == PackageManager.PERMISSION_GRANTED){
+            if(callback!=null)
+                callback.onResponse(true);
         }
     }
 }

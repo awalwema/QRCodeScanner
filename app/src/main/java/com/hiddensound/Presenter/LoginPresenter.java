@@ -42,14 +42,15 @@ public class LoginPresenter implements LoginPresenterInterface {
         httphelper.requestToken(UserName, Password, new Callback<Integer>(){
             @Override
             public void onResponse(Integer integer) {
-                if(httphelper.getResponse()>0){
-                tokenresponse = httphelper.getTokenstring();
-                hiddenModel = localModal.create(jsonParser.parseJson4Login(tokenresponse));
-                tokenHelper.tokenStore(hiddenModel);
-                activity.callDecoder(hiddenModel);
+                if(integer == 200){
+                    tokenresponse = httphelper.getTokenstring();
+                    hiddenModel = localModal.create(jsonParser.parseJson4Login(tokenresponse));
+                    tokenHelper.tokenStore(hiddenModel);
+                    activity.callDecoder(hiddenModel);
+                    checkPhonePair();
                 } else {
                     Log.e("fudge", "up");
-                    activity.setToast("Invalid username and/or password.");
+                    activity.setToast("Invalid username and/or password. Error code:" + integer);
                 }
 
                 activity.hidePB();
@@ -73,14 +74,18 @@ public class LoginPresenter implements LoginPresenterInterface {
         long expireTime = hiddenModel.getTokenTime();
         long currentTime = System.currentTimeMillis();
 
-        if(currentTime < expireTime && expireTime!=0)
+        if(currentTime < expireTime && expireTime!=0){
+            checkPhonePair();
             activity.callDecoder(hiddenModel);
+        }
+
     }
 
     @Override
     public void checkPhonePair() {
         TelephonyManager tm = (TelephonyManager) activity.getSystemService(Context.TELEPHONY_SERVICE);
-        localModal.setIMEI(tm.toString());
+        activity.setToast(tm.getDeviceId());
+        localModal.setIMEI(tm.getDeviceId());
         hiddenModel = localModal.create(hiddenModel);
         httphelper.requestPhonePair(hiddenModel, new Callback<Integer>() {
             @Override
