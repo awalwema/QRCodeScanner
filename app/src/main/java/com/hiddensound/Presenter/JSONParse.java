@@ -27,10 +27,10 @@ public class JSONParse {
         if (jsonTree.isJsonObject()) {
             jsonObject = jsonTree.getAsJsonObject();
             jsonElement = jsonObject.get("access_token");
-            localModel.setToken(jsonElement.toString());
+            localModel.setToken(jsonElement.getAsString());
 
             jsonElement = jsonObject.get("expires_in");
-            localModel.setTokenTime(Long.parseLong(jsonElement.toString()));
+            localModel.setTokenTime(jsonElement.getAsLong());
         }
         return localModel.create();
     }

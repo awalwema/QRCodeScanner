@@ -18,8 +18,8 @@ import com.hiddensound.model.ModelInterface;
 public class TokenHelper implements TokenHelperInterface {
     protected LoginPresenter loginPresenter;
     protected Context context;
-    ModelInterface localModel;
-    HiddenModel hiddenModel;
+    private ModelInterface localModel;
+    private HiddenModel hiddenModel;
 
     public TokenHelper(LoginPresenter loginPresenter, Context context) {
 
@@ -28,7 +28,6 @@ public class TokenHelper implements TokenHelperInterface {
         localModel = new ModelController();
 
     }
-
 
     public void tokenStore(HiddenModel model) {
         this.hiddenModel = model;
@@ -52,7 +51,6 @@ public class TokenHelper implements TokenHelperInterface {
         localModel.setTokenTime(expireTime);
         localModel.setToken(tempToken);
         hiddenModel = localModel.create();
-
 
         return hiddenModel;
     }

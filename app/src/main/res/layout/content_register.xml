@@ -8,9 +8,38 @@
     tools:context="com.hiddensound.qrcodescanner.RegisterActivity"
     tools:showIn="@layout/activity_register">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp"
+        android:weightSum="1"
+        android:layout_marginBottom="15dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
     <TextView
-        android:layout_width="wrap_content"
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/text_margin" />
+
+        <Button
+            android:id="@+id/btnRegisterDevice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/register_device_button"
+            android:fontFamily="sans-serif"
+            android:onClick="startRegisterDevice"
+            android:padding="10dp"
+            android:text="@string/Register_Device"
+            android:textAllCaps="false"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
 
 </android.support.v4.widget.NestedScrollView>

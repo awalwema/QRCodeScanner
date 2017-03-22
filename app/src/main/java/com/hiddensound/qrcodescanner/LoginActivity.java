@@ -46,7 +46,6 @@ public class LoginActivity extends AppCompatActivity implements LoginInterface{
     public void onClickLogin(View v) {
         //function in the activity that corresponds to the layout button
         loginPresenter.checkLogin(UserIDView.getText().toString(), UserPassView.getText().toString());
-//        loginPresenter.checkPhonePair();
     }
 
     public void setToast(String msg){
@@ -64,9 +63,8 @@ public class LoginActivity extends AppCompatActivity implements LoginInterface{
     }
 
 
-    public void startRegisterActivity(View v) {
+    public void startWebSignUp(View v) {
         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://dev-hiddensound.azurewebsites.net/register")));
-
     }
 
     public void startFeaturesActivity(View v) {
@@ -117,8 +115,6 @@ public class LoginActivity extends AppCompatActivity implements LoginInterface{
 
     @Override
     public void requestCameraPermission() {
-
-
         if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA) || ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)) {
             Log.d("permissions",
                     "Displaying camera permission rationale to provide additional context.");
@@ -130,6 +126,17 @@ public class LoginActivity extends AppCompatActivity implements LoginInterface{
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA, Manifest.permission.CAMERA},
                     REQUEST_CAMERA);
         }
+    }
+
+    @Override
+    public void callRegister(HiddenModel hiddenModel) {
+        Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("hModelT", hiddenModel.getToken());
+        bundle.putLong("hModelTT", hiddenModel.getTokenTime());
+        bundle.putSerializable("hModelI", hiddenModel.getIMEI());
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 
     @Override

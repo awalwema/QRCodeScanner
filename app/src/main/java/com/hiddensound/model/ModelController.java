@@ -10,6 +10,7 @@ public class ModelController implements ModelInterface {
     private String qrMemo = null;
     private String appName = null;
     private String token = null;
+    private String type = null;
 
     @Override
     public void setTokenTime(long tokenTime) {
@@ -37,8 +38,13 @@ public class ModelController implements ModelInterface {
     }
 
     @Override
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    @Override
     public HiddenModel create() {
-        return new HiddenModel(imei, qrMemo, appName, token, tokenTime);
+        return new HiddenModel(imei, qrMemo, appName, token, tokenTime, type);
     }
 
     @Override
@@ -53,6 +59,8 @@ public class ModelController implements ModelInterface {
             token = hiddenModel.getToken();
         if(tokenTime == 0)
             tokenTime = hiddenModel.getTokenTime();
+        if(type == null)
+            type = hiddenModel.getType();
 
         return create();
     }

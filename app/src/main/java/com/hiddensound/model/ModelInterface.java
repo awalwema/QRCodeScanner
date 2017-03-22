@@ -11,6 +11,7 @@ public interface ModelInterface {
     void setQRMemo(String  qrMemo);
     void setAppName(String user);
     void setToken(String token);
+    void setType(String type);
     HiddenModel create();
     HiddenModel create(HiddenModel hiddenModel);
 

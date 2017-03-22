@@ -19,20 +19,42 @@ import cz.msebera.android.httpclient.Header;
 public class HttpHelperClient {
     private static final String MAINULR = "https://dev-api-hiddensound.azurewebsites.net";
     private String tokenstring;
-    private AsyncHttpClient client;
-    private RequestParams params;
+    private String deviceRegister;
 
     public HttpHelperClient(){
-        client = new AsyncHttpClient();
-        params = new RequestParams();
+//        client = new AsyncHttpClient();
+//        params = new RequestParams();
 
     }
 
-    public void requestPhonePair(HiddenModel hiddenModel, final Callback<Integer> callback)
+    public void registerDevice(HiddenModel hiddenModel, final  Callback<Integer> callback){
+        RequestParams params = new RequestParams();
+        params.put("imei", hiddenModel.getIMEI());
+        params.put("name", hiddenModel.getType());
+
+        AsyncHttpClient client = addHeaders(hiddenModel);
+        client.post(MAINULR + "/Mobile/Device/Link", params, new TextHttpResponseHandler() {
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                if(callback != null)
+                    callback.onResponse(statusCode);
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                if(callback != null)
+                    callback.onResponse(statusCode);
+            }
+        });
+    }
+
+    public void checkPair(HiddenModel hiddenModel, final Callback<Integer> callback)
     {
-        params.put("imei",hiddenModel.getIMEI());
-        addHeaders(hiddenModel);
-        client.post(MAINULR + "/Mobile/Devices/Check", params, new TextHttpResponseHandler() {
+        RequestParams params = new RequestParams();
+        params.put("imei", hiddenModel.getIMEI());
+
+        AsyncHttpClient client = addHeaders(hiddenModel);
+        client.post(MAINULR + "/Mobile/Device/Check", params, new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString,
                                   Throwable throwable) {
@@ -43,18 +65,23 @@ public class HttpHelperClient {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                deviceRegister = responseString;
+
                 if(callback != null){
                     callback.onResponse(statusCode);
                 }
             }
         });
+
     }
 
     public void postApproval(HiddenModel hiddenModel, final Callback<Integer> callback){
+        RequestParams params = new RequestParams();
         params.put("authorizationCode", hiddenModel.getQRMemo());
         params.put("imei", hiddenModel.getIMEI());
-        addHeaders(hiddenModel);
-        client.post(MAINULR + "/Mobile/Trasaction/Authorize", params, new TextHttpResponseHandler() {
+
+        AsyncHttpClient client = addHeaders(hiddenModel);
+        client.post(MAINULR + "/Mobile/Authorization/Approve", params, new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString,
                                   Throwable throwable) {
@@ -70,14 +97,18 @@ public class HttpHelperClient {
                 }
             }
         });
+
     }
 
     public void requestToken(String UserID, String UserPass, final Callback<Integer> callback) {
         try {
+            RequestParams params = new RequestParams();
             params.put("username", UserID);
             params.put("password", UserPass);
             params.put("grant_type", "password");
             params.put("client_id", "a5U4DvFf3r2N9Kg");
+
+            AsyncHttpClient client = new AsyncHttpClient();
             client.addHeader("Content-Type", "application/x-www-form-urlencoded");
             client.post(MAINULR + "/OAuth/Token", params, new TextHttpResponseHandler() {
                     @Override
@@ -98,6 +129,7 @@ public class HttpHelperClient {
                     }
                 }
             );
+
         } catch (Exception e) {
 
         }
@@ -107,13 +139,19 @@ public class HttpHelperClient {
         return tokenstring;
     }
 
-    private void addHeaders(HiddenModel hiddenModel){
+    public String getDeviceRegister() {return deviceRegister;}
+
+    private AsyncHttpClient addHeaders(HiddenModel hiddenModel){
+        AsyncHttpClient client = new AsyncHttpClient();
+        String token = "Bearer "+ hiddenModel.getToken();
         if(hiddenModel.getToken() != null){
-            client.addHeader("Content-Type", "application/jaon");
-            client.addHeader("Authorization", "Bearer " + hiddenModel.getToken());
+            client.addHeader("Content-Type", "application/x-www-form-urlencoded");
+            client.addHeader("Authorization", token);
         }
         else
             client.addHeader("Content-Type", "application/x-www-form-urlencoded");
+
+        return client;
     }
 
 }

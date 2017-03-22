@@ -84,7 +84,7 @@
             android:textAllCaps="false"
             android:background="@drawable/signupbutton"
             android:fontFamily="sans-serif"
-            android:onClick="startRegisterActivity"
+            android:onClick="startWebSignUp"
             android:padding="10dp"
             android:layout_marginTop="10dp"
             android:text="@string/Register"

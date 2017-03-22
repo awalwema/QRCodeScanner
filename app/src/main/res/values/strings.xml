@@ -11,4 +11,5 @@
     <string name="Authorize">Authorize</string>
     <string name="Decline">Decline</string>
     <string name="title_activity_decoder">DecoderActivity</string>
+    <string name="Register_Device">Register Device</string>
 </resources>

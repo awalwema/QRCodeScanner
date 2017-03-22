@@ -3,6 +3,7 @@ package com.hiddensound.Presenter;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.telephony.TelephonyManager;
@@ -48,13 +49,19 @@ public class LoginPresenter implements LoginPresenterInterface {
                     tokenresponse = httphelper.getTokenstring();
                     hiddenModel = localModal.create(jsonParser.parseJson4Login(tokenresponse));
                     tokenHelper.tokenStore(hiddenModel);
-                    if(!activity.canAccessCamera()){
-                        activity.requestCameraPermission();
-                    } else {
-                        //start decoder activity only if permission is granted
-                        activity.callDecoder(hiddenModel);
+
+                    if(checkPhonePair()) {
+                        if (!activity.canAccessCamera()) {
+                            activity.requestCameraPermission();
+                        } else {
+                            //start decoder activity only if permission is granted
+                            activity.callDecoder(hiddenModel);
+                        }
                     }
-                    //checkPhonePair();
+                    else {
+                        activity.callRegister(hiddenModel);
+                    }
+
                 } else {
                     Log.e("fudge", "up");
                     activity.setToast("Invalid username and/or password. Error code:" + integer);
@@ -81,25 +88,58 @@ public class LoginPresenter implements LoginPresenterInterface {
         long expireTime = hiddenModel.getTokenTime();
         long currentTime = System.currentTimeMillis();
 
-        if(currentTime < expireTime && expireTime!=0){
-            checkPhonePair();
+//        registerDevice(hiddenModel);
+        if(currentTime < expireTime && expireTime!=0 && checkPhonePair()){
             activity.callDecoder(hiddenModel);
         }
 
     }
 
     @Override
-    public void checkPhonePair() {
+    public boolean checkPhonePair() {
+        final boolean[] paired = {false};
         TelephonyManager tm = (TelephonyManager) activity.getSystemService(Context.TELEPHONY_SERVICE);
         activity.setToast(tm.getDeviceId());
         localModal.setIMEI(tm.getDeviceId());
         hiddenModel = localModal.create(hiddenModel);
-        httphelper.requestPhonePair(hiddenModel, new Callback<Integer>() {
+        httphelper.checkPair(hiddenModel, new Callback<Integer>() {
             @Override
             public void onResponse(Integer integer) {
                 //handle response
                 if(integer == 404)
+                    activity.setToast("Bad Server");
+                else if(integer == 401)
+                    activity.setToast("Bad Headers");
+                else if(integer == 400)
                     activity.setToast("Bad Request");
+                else if(integer == 200)
+                    paired[0] = true;
+            }
+        });
+
+        return paired[0];
+    }
+
+    @Override
+    public void registerDevice(HiddenModel hiddenModel) {
+        TelephonyManager tm = (TelephonyManager) activity.getSystemService(Context.TELEPHONY_SERVICE);
+        activity.setToast(tm.getDeviceId());
+        localModal.setIMEI(tm.getDeviceId());
+        localModal.setType(Build.MODEL);
+        hiddenModel = localModal.create(hiddenModel);
+        httphelper.registerDevice(hiddenModel, new Callback<Integer>() {
+            @Override
+            public void onResponse(Integer integer) {
+                //handle response
+                if(integer == 404)
+                    activity.setToast("Bad Server");
+                else if(integer == 401)
+                    activity.setToast("Bad Headers");
+                else if(integer == 400)
+                    activity.setToast("Bad Request");
+                else if(integer == 200)
+                    activity.setToast("Success!!");
+                   // paired[0] = true;
             }
         });
     }
