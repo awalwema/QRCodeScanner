@@ -11,4 +11,14 @@
     <string name="Authorize">Authorize</string>
     <string name="Decline">Decline</string>
     <string name="title_activity_decoder">DecoderActivity</string>
+    <string name="link_device">Link Device</string>
+    <string name="register_device">This device has not yet been registered with our service. In order to proceed this device will have to be registered. Please register your device now.</string>
+    <string name="customer_support">This device is currently registered under a different user account. Please try again with a different device or contact our customer support below.</string>
+    <string name="contact_hiddensound">Contact us</string>
+    <string name="old_device">A device is already registered to this account. Please do the following:\n
+        \n
+        1. Click "Manage Devices" and delete your old device from your account\n
+        2. Click the Sync Device button to add your new device \n
+    </string>
+    <string name="sync_device">Sync Device</string>
 </resources>

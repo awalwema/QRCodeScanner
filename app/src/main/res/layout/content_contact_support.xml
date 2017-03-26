@@ -23,23 +23,23 @@
         android:layout_alignParentStart="true">
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="@string/register_device"
-            android:layout_marginTop="40dp"
-            android:textSize="25sp"
-            />
-
-        <Button
-            android:id="@+id/btnLink"
+            android:id="@+id/textView4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="30dp"
+            android:text="@string/customer_support"
+            android:textSize="22sp" />
+
+        <Button
+            android:id="@+id/btnSupport"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
             android:background="@drawable/signupbutton"
             android:fontFamily="sans-serif"
-            android:onClick="onClickRegister"
+            android:onClick="onClickContact"
             android:padding="15dp"
-            android:text="@string/link_device"
+            android:text="@string/contact_hiddensound"
             android:textAllCaps="false"
             android:textColor="@color/colorPrimary"
             android:textSize="20sp"
@@ -52,9 +52,9 @@
         android:layout_width="381dp"
         android:layout_height="211dp"
 
-        android:layout_marginTop="58dp"
         android:layout_weight="0.42"
         android:src="@drawable/connect"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 </RelativeLayout>
