@@ -55,4 +55,11 @@ public class TokenHelper implements TokenHelperInterface {
         return hiddenModel;
     }
 
+    public void deleteTokenInfo()
+    {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        prefs.edit().clear();
+        prefs.edit().commit();
+    }
+
 }

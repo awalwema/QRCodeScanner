@@ -12,7 +12,7 @@ public interface LoginPresenterInterface {
     void checkLogin(String UserName, String Password);
     void checkPhoneState(LoginActivity act, int RPS);
     void checkTokenValid();
-    boolean checkPhonePair();
+    void checkPhonePair(Callback<Integer> integer);
     void registerDevice(HiddenModel hiddenModel);
     //void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults);
 

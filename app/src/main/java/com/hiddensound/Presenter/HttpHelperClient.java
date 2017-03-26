@@ -1,13 +1,8 @@
 package com.hiddensound.Presenter;
 
-import android.content.Intent;
-
 import com.hiddensound.model.HiddenModel;
-import com.hiddensound.model.ModelController;
 import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.RequestHandle;
 import com.loopj.android.http.RequestParams;
-import com.loopj.android.http.ResponseHandlerInterface;
 import com.loopj.android.http.TextHttpResponseHandler;
 
 import cz.msebera.android.httpclient.Header;
@@ -19,7 +14,7 @@ import cz.msebera.android.httpclient.Header;
 public class HttpHelperClient {
     private static final String MAINULR = "https://dev-api-hiddensound.azurewebsites.net";
     private String tokenstring;
-    private String deviceRegister;
+    private String deviceRegisterStatus;
 
     public HttpHelperClient(){
 //        client = new AsyncHttpClient();
@@ -65,7 +60,7 @@ public class HttpHelperClient {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, String responseString) {
-                deviceRegister = responseString;
+                deviceRegisterStatus = responseString;
 
                 if(callback != null){
                     callback.onResponse(statusCode);
@@ -139,7 +134,7 @@ public class HttpHelperClient {
         return tokenstring;
     }
 
-    public String getDeviceRegister() {return deviceRegister;}
+    public String getDeviceRegisterStatus() {return deviceRegisterStatus;}
 
     private AsyncHttpClient addHeaders(HiddenModel hiddenModel){
         AsyncHttpClient client = new AsyncHttpClient();

@@ -129,9 +129,10 @@ public class LoginActivity extends AppCompatActivity implements LoginInterface{
     }
 
     @Override
-    public void callRegister(HiddenModel hiddenModel) {
+    public void callRegister(HiddenModel hiddenModel, boolean wrongDevice) {
         Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
         Bundle bundle = new Bundle();
+        bundle.putBoolean("flag", wrongDevice);
         bundle.putString("hModelT", hiddenModel.getToken());
         bundle.putLong("hModelTT", hiddenModel.getTokenTime());
         bundle.putSerializable("hModelI", hiddenModel.getIMEI());

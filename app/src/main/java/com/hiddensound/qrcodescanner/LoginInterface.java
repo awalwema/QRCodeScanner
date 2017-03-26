@@ -14,7 +14,7 @@ public interface LoginInterface {
     Object getSystemService(String Name);
     boolean canAccessCamera();
     void requestCameraPermission();
-    void callRegister(HiddenModel hiddenModel);
+    void callRegister(HiddenModel hiddenModel, boolean wrongDevice);
 
     void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults);
 }

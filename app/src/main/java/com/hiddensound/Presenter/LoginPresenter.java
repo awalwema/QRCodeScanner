@@ -15,27 +15,31 @@ import com.hiddensound.model.ModelInterface;
 import com.hiddensound.qrcodescanner.LoginActivity;
 import com.hiddensound.qrcodescanner.LoginInterface;
 
+import java.util.HashMap;
+
 /**
  * Created by Zane on 2/26/2017.
  */
 
 public class LoginPresenter implements LoginPresenterInterface {
     private HiddenModel hiddenModel;
-    private ModelInterface localModal;
+    private ModelInterface localModel;
     private JSONParse jsonParser;
     private String tokenresponse;
+    private String registerStatus;
     private HttpHelperClient httphelper;
     private LoginInterface activity;
     private TokenHelper tokenHelper;
 
     private static final int REQUEST_CAMERA = 0;
+    int status;
 
     public LoginPresenter(LoginActivity loginActivity, Context context){
         this.tokenHelper = new TokenHelper(this, context);
         httphelper = new HttpHelperClient();
         activity = loginActivity;
         jsonParser = new JSONParse();
-        localModal = new ModelController();
+        localModel = new ModelController();
     }
 
     @Override
@@ -47,20 +51,44 @@ public class LoginPresenter implements LoginPresenterInterface {
             public void onResponse(Integer integer) {
                 if(integer == 200){
                     tokenresponse = httphelper.getTokenstring();
-                    hiddenModel = localModal.create(jsonParser.parseJson4Login(tokenresponse));
+                    hiddenModel = localModel.create(jsonParser.parseJson4Login(tokenresponse));
                     tokenHelper.tokenStore(hiddenModel);
 
-                    if(checkPhonePair()) {
-                        if (!activity.canAccessCamera()) {
-                            activity.requestCameraPermission();
-                        } else {
-                            //start decoder activity only if permission is granted
-                            activity.callDecoder(hiddenModel);
+                    checkPhonePair(new Callback<Integer>(){
+                        @Override
+                        public void onResponse(Integer integer) {
+
+                            if (integer == 200){
+                                registerStatus = calculateDevStatus(httphelper.getDeviceRegisterStatus());
+
+                                if (registerStatus.equalsIgnoreCase("Everything is good")) {
+                                    //redirect to decoder activity
+                                    if (!activity.canAccessCamera()) {
+                                        activity.requestCameraPermission();
+                                    } else {
+                                        //start decoder activity only if permission is granted
+                                        activity.callDecoder(hiddenModel);
+                                    }
+                                }
+
+                                else if(registerStatus.equalsIgnoreCase("Different device already registered"))
+                                {
+                                    activity.callRegister(hiddenModel, true);
+                                }
+
+                                else if(registerStatus.equalsIgnoreCase("You can register device"))
+                                {
+                                    activity.callRegister(hiddenModel, false);
+                                }
+
+
+                            }
+                            else {
+                                //activity.callRegister(hiddenModel);
+                            }
                         }
-                    }
-                    else {
-                        activity.callRegister(hiddenModel);
-                    }
+                    });
+
 
                 } else {
                     Log.e("fudge", "up");
@@ -70,6 +98,31 @@ public class LoginPresenter implements LoginPresenterInterface {
                 activity.hidePB();
             }
         });
+    }
+
+    public String calculateDevStatus(String devStatus)
+    {
+        HashMap<String, Boolean> table = jsonParser.parseJson4RegisterStatus(devStatus);
+
+        boolean isUserDevice = table.get("isUserDevice"); //does device belong to user?
+//        boolean isDeviceLinked = table.get("isDeviceLinked"); //is device already linked?
+        boolean userHasDevice = table.get("userHasDevice"); //does user already have device linked?
+
+        String result = "Something wasn't covered";
+
+        if(isUserDevice)
+            result = "Everything is good";
+
+        else if(isUserDevice == false && userHasDevice == true)
+            result = "Different device already registered";
+
+        else if(isUserDevice == false && userHasDevice == false)
+            result = "You can register device";
+
+//        else if(isUserDevice == false && isDeviceLinked == true && userHasDevice == false)
+//            result = "Device is already registered with different user";
+
+        return result;
     }
 
     @Override
@@ -84,27 +137,34 @@ public class LoginPresenter implements LoginPresenterInterface {
     }
 
     public void checkTokenValid() {
-        hiddenModel = localModal.create(tokenHelper.tokenRetrieve());
+        hiddenModel = localModel.create(tokenHelper.tokenRetrieve());
         long expireTime = hiddenModel.getTokenTime();
         long currentTime = System.currentTimeMillis();
 
-//        registerDevice(hiddenModel);
-        if(currentTime < expireTime && expireTime!=0 && checkPhonePair()){
+
+        if(currentTime < expireTime && expireTime!=0 && calculateDevStatus(httphelper.getDeviceRegisterStatus()).equalsIgnoreCase("Everything is good")){
             activity.callDecoder(hiddenModel);
+        }
+
+        else if(currentTime > expireTime && expireTime!=0)
+        {
+            //delete everything stored in shared preferences.
+            tokenHelper.deleteTokenInfo();
         }
 
     }
 
     @Override
-    public boolean checkPhonePair() {
+    public void checkPhonePair(final Callback<Integer> startCallBack) {
         final boolean[] paired = {false};
         TelephonyManager tm = (TelephonyManager) activity.getSystemService(Context.TELEPHONY_SERVICE);
-        activity.setToast(tm.getDeviceId());
-        localModal.setIMEI(tm.getDeviceId());
-        hiddenModel = localModal.create(hiddenModel);
+        //activity.setToast(tm.getDeviceId());
+        localModel.setIMEI(tm.getDeviceId());
+        hiddenModel = localModel.create(hiddenModel);
         httphelper.checkPair(hiddenModel, new Callback<Integer>() {
             @Override
             public void onResponse(Integer integer) {
+                status = integer;
                 //handle response
                 if(integer == 404)
                     activity.setToast("Bad Server");
@@ -114,19 +174,19 @@ public class LoginPresenter implements LoginPresenterInterface {
                     activity.setToast("Bad Request");
                 else if(integer == 200)
                     paired[0] = true;
+
+                startCallBack.onResponse(integer);
             }
         });
 
-        return paired[0];
     }
 
     @Override
     public void registerDevice(HiddenModel hiddenModel) {
         TelephonyManager tm = (TelephonyManager) activity.getSystemService(Context.TELEPHONY_SERVICE);
-        activity.setToast(tm.getDeviceId());
-        localModal.setIMEI(tm.getDeviceId());
-        localModal.setType(Build.MODEL);
-        hiddenModel = localModal.create(hiddenModel);
+        localModel.setIMEI(tm.getDeviceId());
+        localModel.setType(Build.MODEL);
+        hiddenModel = localModel.create(hiddenModel);
         httphelper.registerDevice(hiddenModel, new Callback<Integer>() {
             @Override
             public void onResponse(Integer integer) {

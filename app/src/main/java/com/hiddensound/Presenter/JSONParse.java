@@ -9,6 +9,8 @@ import com.hiddensound.model.HiddenModel;
 import com.hiddensound.model.ModelController;
 import com.hiddensound.model.ModelInterface;
 
+import java.util.HashMap;
+
 public class JSONParse {
     private ModelInterface localModel;
     private JsonParser parser;
@@ -48,6 +50,26 @@ public class JSONParse {
         }
 
         return localModel.create();
+    }
+
+    public HashMap<String, Boolean> parseJson4RegisterStatus(String devRegStatus){
+        jsonTree = parser.parse(devRegStatus);
+        HashMap<String, Boolean> table = new HashMap<>();
+
+        if(jsonTree.isJsonObject()){
+            jsonObject = jsonTree.getAsJsonObject();
+            jsonElement = jsonObject.get("isUserDevice");
+            table.put("isUserDevice", jsonElement.getAsBoolean());
+
+            jsonElement = jsonObject.get("isDeviceLinked");
+            table.put("isDeviceLinked", jsonElement.getAsBoolean());
+
+            jsonElement = jsonObject.get("userHasDevice");
+            table.put("userHasDevice", jsonElement.getAsBoolean());
+
+        }
+
+        return table;
     }
 
 }
