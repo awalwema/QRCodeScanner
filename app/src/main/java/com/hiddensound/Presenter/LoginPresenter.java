@@ -100,8 +100,7 @@ public class LoginPresenter implements LoginPresenterInterface {
         });
     }
 
-    public String calculateDevStatus(String devStatus)
-    {
+    public String calculateDevStatus(String devStatus) {
         HashMap<String, Boolean> table = jsonParser.parseJson4RegisterStatus(devStatus);
 
         boolean isUserDevice = table.get("isUserDevice"); //does device belong to user?
@@ -138,19 +137,55 @@ public class LoginPresenter implements LoginPresenterInterface {
 
     public void checkTokenValid() {
         hiddenModel = localModel.create(tokenHelper.tokenRetrieve());
-        long expireTime = hiddenModel.getTokenTime();
-        long currentTime = System.currentTimeMillis();
+        final long expireTime = hiddenModel.getTokenTime();
+        final long currentTime = System.currentTimeMillis();
+
+        checkPhonePair(new Callback<Integer>(){
+            @Override
+            public void onResponse(Integer integer) {
+
+                if (integer == 200){
+                    registerStatus = calculateDevStatus(httphelper.getDeviceRegisterStatus());
+
+                    if (registerStatus.equalsIgnoreCase("Everything is good")) {
+                        //redirect to decoder activity
+                        if (!activity.canAccessCamera()) {
+                            activity.requestCameraPermission();
+                        } else {
+                            //start decoder activity only if permission is granted
+                            activity.callDecoder(hiddenModel);
+                        }
+                    }
+
+                    else if(registerStatus.equalsIgnoreCase("Different device already registered"))
+                    {
+                        activity.callRegister(hiddenModel, true);
+                    }
+
+                    else if(registerStatus.equalsIgnoreCase("You can register device"))
+                    {
+                        activity.callRegister(hiddenModel, false);
+                    }
 
 
-        if(currentTime < expireTime && expireTime!=0 && calculateDevStatus(httphelper.getDeviceRegisterStatus()).equalsIgnoreCase("Everything is good")){
-            activity.callDecoder(hiddenModel);
-        }
+                }
+                else {
+                    //activity.callRegister(hiddenModel);
+                }
 
-        else if(currentTime > expireTime && expireTime!=0)
-        {
-            //delete everything stored in shared preferences.
-            tokenHelper.deleteTokenInfo();
-        }
+                if(currentTime < expireTime && expireTime!=0 && calculateDevStatus(httphelper.getDeviceRegisterStatus()).equalsIgnoreCase("Everything is good")){
+                    activity.callDecoder(hiddenModel);
+                }
+
+                else if(currentTime > expireTime && expireTime!=0)
+                {
+                    //delete everything stored in shared preferences.
+                    tokenHelper.deleteTokenInfo();
+                }
+            }
+        });
+
+
 
     }
 
@@ -169,7 +204,7 @@ public class LoginPresenter implements LoginPresenterInterface {
                 if(integer == 404)
                     activity.setToast("Bad Server");
                 else if(integer == 401)
-                    activity.setToast("Bad Headers");
+                    activity.setToast("Token Expired");
                 else if(integer == 400)
                     activity.setToast("Bad Request");
                 else if(integer == 200)

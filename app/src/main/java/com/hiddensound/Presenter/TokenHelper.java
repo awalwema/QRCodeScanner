@@ -59,7 +59,7 @@ public class TokenHelper implements TokenHelperInterface {
     {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         prefs.edit().clear();
-        prefs.edit().commit();
+        prefs.edit().apply();
     }
 
 }
