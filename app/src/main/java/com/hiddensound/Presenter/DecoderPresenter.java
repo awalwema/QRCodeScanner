@@ -58,8 +58,8 @@ public class DecoderPresenter implements DecoderPresenterInterface {
         dActivity.expandSlideUp();
     }
 
-    @Override
-    public void checkPermissions(DecoderActivity activity, int value, Callback<Boolean> callback) {
+
+    public void checkPermissions(DecoderActivity activity, int value) {
         int hasCameraPermission = ContextCompat.checkSelfPermission(activity,
                 Manifest.permission.CAMERA);
 
@@ -67,11 +67,6 @@ public class DecoderPresenter implements DecoderPresenterInterface {
             ActivityCompat.requestPermissions(activity,
                     new String[]{Manifest.permission.CAMERA},
                     value);
-        }
-
-        if(hasCameraPermission == PackageManager.PERMISSION_GRANTED){
-            if(callback!=null)
-                callback.onResponse(true);
         }
     }
 }
