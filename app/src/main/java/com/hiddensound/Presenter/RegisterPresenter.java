@@ -33,7 +33,7 @@ public class RegisterPresenter implements RegisterPresenterInterface {
         localModel.setIMEI(tm.getDeviceId());
         localModel.setType(Build.MODEL);
         this.hiddenModel = localModel.create(hiddenModel);
-        httphelper.registerDevice(hiddenModel, new Callback<Integer>() {
+        httphelper.registerDevice(this.hiddenModel, new Callback<Integer>() {
             @Override
             public void onResponse(Integer integer) {
                 //handle response

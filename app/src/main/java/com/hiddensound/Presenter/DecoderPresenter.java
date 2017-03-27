@@ -1,15 +1,12 @@
 package com.hiddensound.Presenter;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.PointF;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.telephony.TelephonyManager;
 
 import com.hiddensound.model.HiddenModel;
-import com.hiddensound.model.ModelController;
 import com.hiddensound.model.ModelInterface;
 import com.hiddensound.qrcodescanner.DecoderActivity;
 import com.hiddensound.qrcodescanner.DecoderInterface;
@@ -49,7 +46,7 @@ public class DecoderPresenter implements DecoderPresenterInterface {
                 else if(integer == 400)
                     dActivity.setToast("Bad Request");
                 else if(integer == 200)
-                    dActivity.setToast("Device register");
+                    dActivity.setToast("Authorized success");
             }
         });
     }
