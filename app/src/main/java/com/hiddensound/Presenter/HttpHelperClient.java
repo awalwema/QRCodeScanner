@@ -95,6 +95,31 @@ public class HttpHelperClient {
 
     }
 
+    public void postDecline(HiddenModel hiddenModel, final Callback<Integer> callback){
+        RequestParams params = new RequestParams();
+        params.put("AuthorizationCode", hiddenModel.getQRMemo());
+        params.put("IMEI", hiddenModel.getIMEI());
+
+        AsyncHttpClient client = addHeaders(hiddenModel);
+        client.post(MAINULR + "/Mobile/Authorization/Decline", params, new TextHttpResponseHandler() {
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString,
+                                  Throwable throwable) {
+                if(callback != null){
+                    callback.onResponse(statusCode);
+                }
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                if(callback != null){
+                    callback.onResponse(statusCode);
+                }
+            }
+        });
+    }
+
+
     public void requestToken(String UserID, String UserPass, final Callback<Integer> callback) {
         try {
             RequestParams params = new RequestParams();

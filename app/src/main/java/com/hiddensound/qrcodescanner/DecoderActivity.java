@@ -156,6 +156,8 @@ public class DecoderActivity extends AppCompatActivity implements QRCodeReaderVi
         mydecoderview.refreshDrawableState();
 
         mLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
+
+        pDecoder.Decline();
     }
 
     public void onAccept(View v) {

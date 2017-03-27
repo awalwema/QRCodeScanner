@@ -52,6 +52,24 @@ public class DecoderPresenter implements DecoderPresenterInterface {
     }
 
     @Override
+    public void Decline() {
+        httpHelper.postDecline(this.hiddenModel, new Callback<Integer>() {
+            @Override
+            public void onResponse(Integer integer) {
+                //handle approval response
+                if(integer == 404)
+                    dActivity.setToast("Server not found");
+                else if(integer == 401)
+                    dActivity.setToast("Unauthorized/Bad Token");
+                else if(integer == 400)
+                    dActivity.setToast("Bad Request");
+                else if(integer == 200)
+                    dActivity.setToast("Authorization successful!");
+            }
+        });
+    }
+
+    @Override
     public void onQRCodeRead(String text, PointF[] points) {
         hiddenModel = localModel.create(jsonParse.parseJson4Decoder(text));
 

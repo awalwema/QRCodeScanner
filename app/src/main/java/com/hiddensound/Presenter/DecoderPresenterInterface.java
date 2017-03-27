@@ -11,6 +11,7 @@ import com.hiddensound.qrcodescanner.DecoderActivity;
 
 public interface DecoderPresenterInterface {
     void Approve();
+    void Decline();
     void onQRCodeRead(String text, PointF[] points);
     void checkPermissions(DecoderActivity activity, int value);
 }
