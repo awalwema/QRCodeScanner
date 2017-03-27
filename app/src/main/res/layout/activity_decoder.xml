@@ -32,7 +32,7 @@
         sothree:umanoDragView="@+id/dragView"
         sothree:umanoOverlay="true"
         sothree:umanoPanelHeight="0dp"
-        sothree:umanoParalaxOffset="100dp"
+        sothree:umanoParalaxOffset="120dp"
         sothree:umanoShadowHeight="0dp">
 
         <LinearLayout

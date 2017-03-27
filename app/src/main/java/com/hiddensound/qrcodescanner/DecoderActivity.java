@@ -2,6 +2,7 @@ package com.hiddensound.qrcodescanner;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.PointF;
 import android.os.Bundle;
@@ -117,6 +118,12 @@ public class DecoderActivity extends AppCompatActivity implements QRCodeReaderVi
         mLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
     }
 
+    @Override
+    public void callLogin() {
+        Intent intent = new Intent(DecoderActivity.this, LoginActivity.class);
+        startActivity(intent);
+    }
+
     private SlidingUpPanelLayout.PanelSlideListener onSlideListener() {
         return new SlidingUpPanelLayout.PanelSlideListener(){
 
@@ -156,12 +163,15 @@ public class DecoderActivity extends AppCompatActivity implements QRCodeReaderVi
 
         pDecoder.Decline();
         mLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
-
     }
 
     public void onAccept(View v) {
         pDecoder.Approve();
         mLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
+    }
+
+    public void onSignOut(View v){
+        pDecoder.SingOut();
     }
 
     @Override

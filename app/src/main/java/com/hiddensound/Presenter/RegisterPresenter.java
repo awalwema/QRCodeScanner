@@ -52,7 +52,7 @@ public class RegisterPresenter implements RegisterPresenterInterface {
         });
     }
 
-    public void callDecoder(){
+    private void callDecoder(){
         activity.callDecoder(hiddenModel);
     }
 }

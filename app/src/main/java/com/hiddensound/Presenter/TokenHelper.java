@@ -16,17 +16,13 @@ import com.hiddensound.model.ModelInterface;
 
 
 public class TokenHelper implements TokenHelperInterface {
-    protected LoginPresenter loginPresenter;
     protected Context context;
     private ModelInterface localModel;
     private HiddenModel hiddenModel;
 
-    public TokenHelper(LoginPresenter loginPresenter, Context context) {
-
-        this.loginPresenter = loginPresenter;
+    public TokenHelper(Context context) {
         this.context = context;
         localModel = new ModelController();
-
     }
 
     public void tokenStore(HiddenModel model) {

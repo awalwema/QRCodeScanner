@@ -36,7 +36,7 @@ public class LoginPresenter implements LoginPresenterInterface {
     int status;
 
     public LoginPresenter(LoginActivity loginActivity, Context context){
-        this.tokenHelper = new TokenHelper(this, context);
+        this.tokenHelper = new TokenHelper(context);
         httphelper = new HttpHelperClient();
         activity = loginActivity;
         jsonParser = new JSONParse();

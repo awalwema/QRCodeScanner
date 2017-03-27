@@ -70,6 +70,13 @@ public class DecoderPresenter implements DecoderPresenterInterface {
     }
 
     @Override
+    public void SingOut() {
+        TokenHelperInterface temp = new TokenHelper(dActivity.getContext());
+        temp.deleteTokenInfo();
+        dActivity.callLogin();
+    }
+
+    @Override
     public void onQRCodeRead(String text, PointF[] points) {
         hiddenModel = localModel.create(jsonParse.parseJson4Decoder(text));
 
