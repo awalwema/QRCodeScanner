@@ -15,6 +15,7 @@ import com.hiddensound.model.ModelInterface;
 import com.hiddensound.qrcodescanner.LoginActivity;
 import com.hiddensound.qrcodescanner.LoginInterface;
 
+
 import java.util.HashMap;
 
 /**
@@ -218,6 +219,10 @@ public class LoginPresenter implements LoginPresenterInterface {
 
     @Override
     public void registerDevice(HiddenModel hiddenModel) {
+        if (activity == null) {
+
+        }
+
         TelephonyManager tm = (TelephonyManager) activity.getSystemService(Context.TELEPHONY_SERVICE);
         localModel.setIMEI(tm.getDeviceId());
         localModel.setType(Build.MODEL);

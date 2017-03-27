@@ -28,11 +28,6 @@ public class RegisterActivity extends AppCompatActivity implements RegisterInter
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.content_register);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-
         localModel = new ModelController();
 
         Bundle bundle = this.getIntent().getExtras();
@@ -41,7 +36,14 @@ public class RegisterActivity extends AppCompatActivity implements RegisterInter
             localModel.setTokenTime(bundle.getLong("hModelTT"));
             localModel.setIMEI(bundle.getString("hModelI"));
             wrongDevice = bundle.getBoolean("flag");
+            if (wrongDevice) {
+                setContentView(R.layout.content_old_device);
+            } else {
+                setContentView(R.layout.content_register);
+            }
         }
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         hiddenModel = localModel.create();
         registerPresenter = new RegisterPresenter(hiddenModel, this);
@@ -57,8 +59,12 @@ public class RegisterActivity extends AppCompatActivity implements RegisterInter
     }
 
 
-    public void startRegisterDevice(View v) {
-        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://dev-hiddensound.azurewebsites.net/register")));
+    public void onClickDeviceManager(View v) {
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://dev-hiddensound.azurewebsites.net/account/devices")));
+    }
+
+    public void onClickRegister(View view) {
+        registerPresenter.registerDevice(hiddenModel);
     }
 
     @Override

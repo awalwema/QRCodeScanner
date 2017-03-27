@@ -58,8 +58,9 @@ public class TokenHelper implements TokenHelperInterface {
     public void deleteTokenInfo()
     {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        prefs.edit().clear();
-        prefs.edit().apply();
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.clear();
+        editor.apply();
     }
 
 }
