@@ -17,7 +17,6 @@ import android.widget.Toast;
 import com.dlazaro66.qrcodereaderview.QRCodeReaderView;
 import com.hiddensound.Presenter.DecoderPresenter;
 import com.hiddensound.Presenter.DecoderPresenterInterface;
-import com.hiddensound.model.HiddenModel;
 import com.hiddensound.model.ModelController;
 import com.hiddensound.model.ModelInterface;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
@@ -155,13 +154,14 @@ public class DecoderActivity extends AppCompatActivity implements QRCodeReaderVi
         mydecoderview.setQRDecodingEnabled(true);
         mydecoderview.refreshDrawableState();
 
+        pDecoder.Decline();
         mLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
 
-        pDecoder.Decline();
     }
 
     public void onAccept(View v) {
         pDecoder.Approve();
+        mLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
     }
 
     @Override
