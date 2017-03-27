@@ -72,8 +72,8 @@ public class HttpHelperClient {
 
     public void postApproval(HiddenModel hiddenModel, final Callback<Integer> callback){
         RequestParams params = new RequestParams();
-        params.put("authorizationCode", hiddenModel.getQRMemo());
-        params.put("imei", hiddenModel.getIMEI());
+        params.put("AuthorizationCode", hiddenModel.getQRMemo());
+        params.put("IMEI", hiddenModel.getIMEI());
 
         AsyncHttpClient client = addHeaders(hiddenModel);
         client.post(MAINULR + "/Mobile/Authorization/Approve", params, new TextHttpResponseHandler() {

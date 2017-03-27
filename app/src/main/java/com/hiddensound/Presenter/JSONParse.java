@@ -43,10 +43,10 @@ public class JSONParse {
         if(jsonTree.isJsonObject()){
             jsonObject = jsonTree.getAsJsonObject();
             jsonElement = jsonObject.get("applicationName");
-            localModel.setAppName(jsonElement.toString());
+            localModel.setAppName(jsonElement.getAsString());
 
             jsonElement = jsonObject.get("authorizationCode");
-            localModel.setQRMemo(jsonElement.toString());
+            localModel.setQRMemo(jsonElement.getAsString());
         }
 
         return localModel.create();
