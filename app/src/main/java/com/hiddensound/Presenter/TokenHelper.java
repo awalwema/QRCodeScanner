@@ -46,7 +46,7 @@ public class TokenHelper implements TokenHelperInterface {
 
     public HiddenModel tokenRetrieve() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        long expireTime = (long) prefs.getLong("TokenExpire", 0);
+        long expireTime = prefs.getLong("TokenExpire", 0);
         String tempToken = prefs.getString("Token", null);
         localModel.setTokenTime(expireTime);
         localModel.setToken(tempToken);

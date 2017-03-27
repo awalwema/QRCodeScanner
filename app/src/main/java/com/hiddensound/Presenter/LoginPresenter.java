@@ -141,50 +141,43 @@ public class LoginPresenter implements LoginPresenterInterface {
         final long expireTime = hiddenModel.getTokenTime();
         final long currentTime = System.currentTimeMillis();
 
-        checkPhonePair(new Callback<Integer>(){
-            @Override
-            public void onResponse(Integer integer) {
+        if(expireTime!=0) {
+            checkPhonePair(new Callback<Integer>() {
+                @Override
+                public void onResponse(Integer integer) {
 
-                if (integer == 200){
-                    registerStatus = calculateDevStatus(httphelper.getDeviceRegisterStatus());
+                    if (integer == 200) {
+                        registerStatus = calculateDevStatus(httphelper.getDeviceRegisterStatus());
 
-                    if (registerStatus.equalsIgnoreCase("Everything is good")) {
-                        //redirect to decoder activity
-                        if (!activity.canAccessCamera()) {
-                            activity.requestCameraPermission();
-                        } else {
-                            //start decoder activity only if permission is granted
-                            activity.callDecoder(hiddenModel);
+                        if (registerStatus.equalsIgnoreCase("Everything is good")) {
+                            //redirect to decoder activity
+                            if (!activity.canAccessCamera()) {
+                                activity.requestCameraPermission();
+                            } else if(currentTime < expireTime && expireTime != 0){
+                                //start decoder activity only if permission is granted
+                                activity.callDecoder(hiddenModel);
+                            }
+                        } else if (registerStatus.equalsIgnoreCase("Different device already registered")) {
+                            activity.callRegister(hiddenModel, true);
+                        } else if (registerStatus.equalsIgnoreCase("You can register device")) {
+                            activity.callRegister(hiddenModel, false);
                         }
+
+
+                    } else {
+                        //activity.callRegister(hiddenModel);
                     }
 
-                    else if(registerStatus.equalsIgnoreCase("Different device already registered"))
-                    {
-                        activity.callRegister(hiddenModel, true);
+//                    if (currentTime < expireTime && expireTime != 0 && calculateDevStatus(httphelper.getDeviceRegisterStatus()).equalsIgnoreCase("Everything is good")) {
+//                        activity.callDecoder(hiddenModel);
+//                    } else
+                    if (currentTime > expireTime && expireTime != 0) {
+                        //delete everything stored in shared preferences.
+                        tokenHelper.deleteTokenInfo();
                     }
-
-                    else if(registerStatus.equalsIgnoreCase("You can register device"))
-                    {
-                        activity.callRegister(hiddenModel, false);
-                    }
-
-
                 }
-                else {
-                    //activity.callRegister(hiddenModel);
-                }
-
-                if(currentTime < expireTime && expireTime!=0 && calculateDevStatus(httphelper.getDeviceRegisterStatus()).equalsIgnoreCase("Everything is good")){
-                    activity.callDecoder(hiddenModel);
-                }
-
-                else if(currentTime > expireTime && expireTime!=0)
-                {
-                    //delete everything stored in shared preferences.
-                    tokenHelper.deleteTokenInfo();
-                }
-            }
-        });
+            });
+        }
 
 
 

@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.dlazaro66.qrcodereaderview.QRCodeReaderView;
 import com.hiddensound.Presenter.DecoderPresenter;
 import com.hiddensound.Presenter.DecoderPresenterInterface;
+import com.hiddensound.model.HiddenModel;
 import com.hiddensound.model.ModelController;
 import com.hiddensound.model.ModelInterface;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
@@ -49,7 +50,7 @@ public class DecoderActivity extends AppCompatActivity implements QRCodeReaderVi
             localModel.setIMEI(bundle.getString("hModelI"));
         }
 
-        pDecoder = new DecoderPresenter(localModel.create(), this);
+        pDecoder = new DecoderPresenter(localModel, this);
 
 
         mydecoderview = (QRCodeReaderView) findViewById(R.id.qrdecoderview);

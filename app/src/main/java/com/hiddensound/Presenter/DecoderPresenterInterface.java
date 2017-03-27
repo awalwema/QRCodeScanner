@@ -2,6 +2,7 @@ package com.hiddensound.Presenter;
 
 import android.graphics.PointF;
 
+import com.hiddensound.model.HiddenModel;
 import com.hiddensound.qrcodescanner.DecoderActivity;
 
 /**

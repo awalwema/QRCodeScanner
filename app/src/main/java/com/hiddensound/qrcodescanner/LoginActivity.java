@@ -82,7 +82,7 @@ public class LoginActivity extends AppCompatActivity implements LoginInterface{
         Bundle bundle = new Bundle();
         bundle.putString("hModelT", hiddenModel.getToken());
         bundle.putLong("hModelTT", hiddenModel.getTokenTime());
-        bundle.putSerializable("hModelI", hiddenModel.getIMEI());
+        bundle.putString("hModelI", hiddenModel.getIMEI());
         intent.putExtras(bundle);
         startActivity(intent);
     }

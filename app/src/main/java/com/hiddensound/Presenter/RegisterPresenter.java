@@ -28,11 +28,11 @@ public class RegisterPresenter implements RegisterPresenterInterface {
     }
 
     @Override
-    public void registerDevice(HiddenModel hiddenModel) {
+    public void registerDevice(final HiddenModel hiddenModel) {
         TelephonyManager tm = (TelephonyManager) activity.getSystemService(Context.TELEPHONY_SERVICE);
         localModel.setIMEI(tm.getDeviceId());
         localModel.setType(Build.MODEL);
-        hiddenModel = localModel.create(hiddenModel);
+        this.hiddenModel = localModel.create(hiddenModel);
         httphelper.registerDevice(hiddenModel, new Callback<Integer>() {
             @Override
             public void onResponse(Integer integer) {
@@ -43,8 +43,9 @@ public class RegisterPresenter implements RegisterPresenterInterface {
                     activity.setToast("Bad Headers");
                 else if(integer == 400)
                     activity.setToast("Bad Request");
-                else if(integer == 200)
+                else if(integer == 200) {
                     activity.setToast("Success!!");
+                }
                 // paired[0] = true;
             }
         });

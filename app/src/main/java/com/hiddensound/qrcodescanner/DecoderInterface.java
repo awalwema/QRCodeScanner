@@ -17,4 +17,5 @@ public interface DecoderInterface {
     Activity getActivity();
     void setAppName(String appName);
     void expandSlideUp();
+    Object getSystemService(String Name);
 }

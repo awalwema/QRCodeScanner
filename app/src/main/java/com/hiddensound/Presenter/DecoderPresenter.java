@@ -1,10 +1,12 @@
 package com.hiddensound.Presenter;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.PointF;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.telephony.TelephonyManager;
 
 import com.hiddensound.model.HiddenModel;
 import com.hiddensound.model.ModelController;
@@ -23,9 +25,9 @@ public class DecoderPresenter implements DecoderPresenterInterface {
     private JSONParse jsonParse;
     private HttpHelperClient httpHelper;
 
-    public DecoderPresenter(HiddenModel hiddenModel, DecoderInterface dActivty) {
-        localModel = new ModelController();
-        this.hiddenModel = hiddenModel;
+    public DecoderPresenter(ModelInterface localModel, DecoderInterface dActivty) {
+        this.localModel = localModel;
+        hiddenModel = this.localModel.create();
         this.dActivity = dActivty;
         jsonParse = new JSONParse();
         httpHelper = new HttpHelperClient();
@@ -33,8 +35,10 @@ public class DecoderPresenter implements DecoderPresenterInterface {
 
     @Override
     public void Approve() {
-        hiddenModel = localModel.create(hiddenModel);
-        httpHelper.postApproval(hiddenModel, new Callback<Integer>() {
+//        TelephonyManager tm = (TelephonyManager) dActivity.getSystemService(Context.TELEPHONY_SERVICE);
+//        localModel.setIMEI(tm.getDeviceId());
+//        this.hiddenModel = hiddenModel;
+        httpHelper.postApproval(this.hiddenModel, new Callback<Integer>() {
             @Override
             public void onResponse(Integer integer) {
                 //handle approval response

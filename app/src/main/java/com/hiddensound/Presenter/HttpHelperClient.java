@@ -24,8 +24,8 @@ public class HttpHelperClient {
 
     public void registerDevice(HiddenModel hiddenModel, final  Callback<Integer> callback){
         RequestParams params = new RequestParams();
-        params.put("imei", hiddenModel.getIMEI());
-        params.put("name", hiddenModel.getType());
+        params.put("IMEI", hiddenModel.getIMEI());
+        params.put("Name", hiddenModel.getType());
 
         AsyncHttpClient client = addHeaders(hiddenModel);
         client.post(MAINULR + "/Mobile/Device/Link", params, new TextHttpResponseHandler() {
@@ -46,7 +46,7 @@ public class HttpHelperClient {
     public void checkPair(HiddenModel hiddenModel, final Callback<Integer> callback)
     {
         RequestParams params = new RequestParams();
-        params.put("imei", hiddenModel.getIMEI());
+        params.put("IMEI", hiddenModel.getIMEI());
 
         AsyncHttpClient client = addHeaders(hiddenModel);
         client.post(MAINULR + "/Mobile/Device/Check", params, new TextHttpResponseHandler() {
