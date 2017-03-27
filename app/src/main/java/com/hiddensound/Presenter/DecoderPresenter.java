@@ -46,7 +46,7 @@ public class DecoderPresenter implements DecoderPresenterInterface {
                 else if(integer == 400)
                     dActivity.setToast("Bad Request");
                 else if(integer == 200)
-                    dActivity.setToast("Authorized success");
+                    dActivity.setToast("Authorization successful!");
             }
         });
     }
