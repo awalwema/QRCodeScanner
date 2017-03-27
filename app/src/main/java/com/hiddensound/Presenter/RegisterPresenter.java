@@ -28,7 +28,7 @@ public class RegisterPresenter implements RegisterPresenterInterface {
     }
 
     @Override
-    public void registerDevice(final HiddenModel hiddenModel) {
+    public void registerDevice(HiddenModel hiddenModel) {
         TelephonyManager tm = (TelephonyManager) activity.getSystemService(Context.TELEPHONY_SERVICE);
         localModel.setIMEI(tm.getDeviceId());
         localModel.setType(Build.MODEL);
@@ -45,9 +45,14 @@ public class RegisterPresenter implements RegisterPresenterInterface {
                     activity.setToast("Bad Request");
                 else if(integer == 200) {
                     activity.setToast("Success!!");
+                    callDecoder();
                 }
                 // paired[0] = true;
             }
         });
+    }
+
+    public void callDecoder(){
+        activity.callDecoder(hiddenModel);
     }
 }
