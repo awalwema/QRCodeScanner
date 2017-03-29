@@ -14,6 +14,7 @@ public interface ModelInterface {
     void setType(String type);
     HiddenModel create();
     HiddenModel create(HiddenModel hiddenModel);
+    HiddenModel updateToken(HiddenModel hiddenModel);
 
     interface onModelCall{
         void setIMEI();

@@ -64,4 +64,11 @@ public class ModelController implements ModelInterface {
 
         return create();
     }
+
+    @Override
+    public HiddenModel updateToken(HiddenModel hiddenModel) {
+        token = hiddenModel.getToken();
+        tokenTime = hiddenModel.getTokenTime();
+        return create();
+    }
 }

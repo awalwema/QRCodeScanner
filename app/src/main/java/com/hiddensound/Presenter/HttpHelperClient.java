@@ -163,10 +163,9 @@ public class HttpHelperClient {
 
     private AsyncHttpClient addHeaders(HiddenModel hiddenModel){
         AsyncHttpClient client = new AsyncHttpClient();
-        String token = "Bearer "+ hiddenModel.getToken();
         if(hiddenModel.getToken() != null){
             client.addHeader("Content-Type", "application/x-www-form-urlencoded");
-            client.addHeader("Authorization", token);
+            client.addHeader("Authorization", "Bearer "+ hiddenModel.getToken());
         }
         else
             client.addHeader("Content-Type", "application/x-www-form-urlencoded");

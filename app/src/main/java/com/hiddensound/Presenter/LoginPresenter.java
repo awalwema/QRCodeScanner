@@ -52,7 +52,7 @@ public class LoginPresenter implements LoginPresenterInterface {
             public void onResponse(Integer integer) {
                 if(integer == 200){
                     tokenresponse = httphelper.getTokenstring();
-                    hiddenModel = localModel.create(jsonParser.parseJson4Login(tokenresponse));
+                    hiddenModel = localModel.updateToken(jsonParser.parseJson4Login(tokenresponse));
                     tokenHelper.tokenStore(hiddenModel);
 
                     checkPhonePair(new Callback<Integer>(){

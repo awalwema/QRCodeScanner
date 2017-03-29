@@ -26,13 +26,13 @@ public class TokenHelper implements TokenHelperInterface {
     }
 
     public void tokenStore(HiddenModel model) {
-        this.hiddenModel = model;
-        long tokenTime = hiddenModel.getTokenTime();
+        long tokenTime = model.getTokenTime();
 
         tokenTime = tokenTime * 1000;
         long expireTime = System.currentTimeMillis() + tokenTime;
         localModel.setTokenTime(expireTime);
-        hiddenModel = localModel.create(hiddenModel);
+        localModel.setToken(model.getToken());
+        hiddenModel = localModel.create();
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = pref.edit();
         editor.putString("Token", hiddenModel.getToken());
