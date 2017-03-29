@@ -44,8 +44,13 @@ public class RegisterPresenter implements RegisterPresenterInterface {
                 else if(integer == 400)
                     activity.setToast("Bad Request");
                 else if(integer == 200) {
-                    activity.setToast("Success!!");
-                    callDecoder();
+                    activity.setToast("Device Registered!");
+                    if (!activity.canAccessCamera()) {
+                        activity.requestCameraPermission();
+                    } else {
+                        //start decoder activity only if permission is granted
+                        callDecoder();
+                    }
                 }
                 // paired[0] = true;
             }

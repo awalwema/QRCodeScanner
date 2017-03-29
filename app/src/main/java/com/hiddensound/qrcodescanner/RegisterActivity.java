@@ -1,10 +1,14 @@
 package com.hiddensound.qrcodescanner;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -24,6 +28,7 @@ public class RegisterActivity extends AppCompatActivity implements RegisterInter
     private boolean wrongDevice;
     private RegisterPresenterInterface registerPresenter;
     private HiddenModel hiddenModel;
+    private static final int REQUEST_CAMERA = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,5 +86,42 @@ public class RegisterActivity extends AppCompatActivity implements RegisterInter
         bundle.putSerializable("hModelI", hiddenModel.getIMEI());
         intent.putExtras(bundle);
         startActivity(intent);
+    }
+
+    public void requestCameraPermission() {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA) || ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)) {
+            Log.d("permissions",
+                    "Displaying camera permission rationale to provide additional context.");
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA, Manifest.permission.CAMERA},
+                    REQUEST_CAMERA);
+        } else {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA, Manifest.permission.CAMERA},
+                    REQUEST_CAMERA);
+        }
+    }
+
+    public boolean canAccessCamera() {
+        return (hasPermission(Manifest.permission.CAMERA));
+    }
+
+    public boolean hasPermission(String perm) {
+        return(PackageManager.PERMISSION_GRANTED==checkCallingOrSelfPermission(perm));
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_CAMERA:
+                if(ActivityCompat.checkSelfPermission(this, permissions[0]) == PackageManager.PERMISSION_GRANTED)    {
+                    // Permission Granted
+                    startActivity(new Intent(this, DecoderActivity.class));
+                } else {
+                    // Permission Denied
+                    this.setToast("CAMERA Access Denied");
+                }
+                break;
+            default:
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
     }
 }
