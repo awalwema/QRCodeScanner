@@ -17,8 +17,6 @@ public class HttpHelperClient {
     private String deviceRegisterStatus;
 
     public HttpHelperClient(){
-//        client = new AsyncHttpClient();
-//        params = new RequestParams();
 
     }
 

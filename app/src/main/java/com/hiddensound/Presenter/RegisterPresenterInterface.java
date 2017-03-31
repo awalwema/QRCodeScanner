@@ -8,4 +8,6 @@ import com.hiddensound.model.HiddenModel;
 
 public interface RegisterPresenterInterface {
     void registerDevice(HiddenModel hiddenModel);
+    void signOut();
+
 }

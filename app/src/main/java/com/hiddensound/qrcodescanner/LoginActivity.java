@@ -148,6 +148,12 @@ public class LoginActivity extends AppCompatActivity implements LoginInterface{
     private boolean hasPermission(String perm) {
         return(PackageManager.PERMISSION_GRANTED==checkCallingOrSelfPermission(perm));
     }
+
+    @Override
+    public void finishLoginActivity()
+    {
+        finish();
+    }
 }
 
 

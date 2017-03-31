@@ -69,24 +69,25 @@ public class LoginPresenter implements LoginPresenterInterface {
                                     } else {
                                         //start decoder activity only if permission is granted
                                         activity.callDecoder(hiddenModel);
+                                        activity.finishLoginActivity();
                                     }
                                 }
 
                                 else if(registerStatus.equalsIgnoreCase("Different device already registered"))
                                 {
                                     activity.callRegister(hiddenModel, true);
+                                    activity.finishLoginActivity();
                                 }
 
                                 else if(registerStatus.equalsIgnoreCase("You can register device"))
                                 {
                                     activity.callRegister(hiddenModel, false);
+                                    activity.finishLoginActivity();
                                 }
 
 
                             }
-                            else {
-                                //activity.callRegister(hiddenModel);
-                            }
+
                         }
                     });
 
@@ -105,7 +106,6 @@ public class LoginPresenter implements LoginPresenterInterface {
         HashMap<String, Boolean> table = jsonParser.parseJson4RegisterStatus(devStatus);
 
         boolean isUserDevice = table.get("isUserDevice"); //does device belong to user?
-//        boolean isDeviceLinked = table.get("isDeviceLinked"); //is device already linked?
         boolean userHasDevice = table.get("userHasDevice"); //does user already have device linked?
 
         String result = "Something wasn't covered";
@@ -113,14 +113,11 @@ public class LoginPresenter implements LoginPresenterInterface {
         if(isUserDevice)
             result = "Everything is good";
 
-        else if(isUserDevice == false && userHasDevice == true)
+        else if(!isUserDevice && userHasDevice)
             result = "Different device already registered";
 
-        else if(isUserDevice == false && userHasDevice == false)
+        else if(!isUserDevice && !userHasDevice)
             result = "You can register device";
-
-//        else if(isUserDevice == false && isDeviceLinked == true && userHasDevice == false)
-//            result = "Device is already registered with different user";
 
         return result;
     }
@@ -141,7 +138,8 @@ public class LoginPresenter implements LoginPresenterInterface {
         final long expireTime = hiddenModel.getTokenTime();
         final long currentTime = System.currentTimeMillis();
 
-        if(expireTime!=0) {
+
+        if(expireTime!=0 && currentTime < expireTime) {
             checkPhonePair(new Callback<Integer>() {
                 @Override
                 public void onResponse(Integer integer) {
@@ -156,30 +154,29 @@ public class LoginPresenter implements LoginPresenterInterface {
                             } else if(currentTime < expireTime && expireTime != 0){
                                 //start decoder activity only if permission is granted
                                 activity.callDecoder(hiddenModel);
+                                activity.finishLoginActivity();
                             }
                         } else if (registerStatus.equalsIgnoreCase("Different device already registered")) {
                             activity.callRegister(hiddenModel, true);
+                            activity.finishLoginActivity();
                         } else if (registerStatus.equalsIgnoreCase("You can register device")) {
                             activity.callRegister(hiddenModel, false);
+                            activity.finishLoginActivity();
                         }
 
 
-                    } else {
-                        //activity.callRegister(hiddenModel);
                     }
 
-//                    if (currentTime < expireTime && expireTime != 0 && calculateDevStatus(httphelper.getDeviceRegisterStatus()).equalsIgnoreCase("Everything is good")) {
-//                        activity.callDecoder(hiddenModel);
-//                    } else
-                    if (currentTime > expireTime && expireTime != 0) {
-                        //delete everything stored in shared preferences.
-                        tokenHelper.deleteTokenInfo();
-                    }
+
                 }
             });
         }
 
-
+        else
+        {
+            //delete everything stored in shared preferences.
+            tokenHelper.deleteTokenInfo();
+        }
 
     }
 
@@ -232,7 +229,6 @@ public class LoginPresenter implements LoginPresenterInterface {
                     activity.setToast("Bad Request");
                 else if(integer == 200)
                     activity.setToast("Success!!");
-                   // paired[0] = true;
             }
         });
     }

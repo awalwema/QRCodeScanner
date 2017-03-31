@@ -11,6 +11,9 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,13 +35,15 @@ public class DecoderActivity extends AppCompatActivity implements QRCodeReaderVi
     private DecoderPresenterInterface pDecoder;
     private static final int REQUEST_CAMERA = 0;
     private Boolean holdTill = false;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_decoder);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
+
 
         localModel = new ModelController();
 
@@ -78,8 +83,7 @@ public class DecoderActivity extends AppCompatActivity implements QRCodeReaderVi
     @Override
     protected void onResume(){
         super.onResume();
-        if(holdTill)
-            mydecoderview.startCamera();
+        mydecoderview.startCamera();
     }
 
     @Override
@@ -170,9 +174,6 @@ public class DecoderActivity extends AppCompatActivity implements QRCodeReaderVi
         mLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
     }
 
-    public void onSignOut(View v){
-        pDecoder.SingOut();
-    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
@@ -189,5 +190,25 @@ public class DecoderActivity extends AppCompatActivity implements QRCodeReaderVi
             default:
                 super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        switch (item.getItemId()){
+            case R.id.item_logout:
+                pDecoder.signOut();
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
     }
 }

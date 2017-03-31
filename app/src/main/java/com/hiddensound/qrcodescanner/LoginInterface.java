@@ -15,6 +15,6 @@ public interface LoginInterface {
     boolean canAccessCamera();
     void requestCameraPermission();
     void callRegister(HiddenModel hiddenModel, boolean wrongDevice);
+    void finishLoginActivity();
 
-    void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults);
 }

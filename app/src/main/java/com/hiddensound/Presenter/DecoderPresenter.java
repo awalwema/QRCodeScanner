@@ -32,9 +32,6 @@ public class DecoderPresenter implements DecoderPresenterInterface {
 
     @Override
     public void Approve() {
-//        TelephonyManager tm = (TelephonyManager) dActivity.getSystemService(Context.TELEPHONY_SERVICE);
-//        localModel.setIMEI(tm.getDeviceId());
-//        this.hiddenModel = hiddenModel;
         httpHelper.postApproval(this.hiddenModel, new Callback<Integer>() {
             @Override
             public void onResponse(Integer integer) {
@@ -70,10 +67,12 @@ public class DecoderPresenter implements DecoderPresenterInterface {
     }
 
     @Override
-    public void SingOut() {
+    public void signOut() {
         TokenHelperInterface temp = new TokenHelper(dActivity.getContext());
         temp.deleteTokenInfo();
+        dActivity.setToast("You have been successfully logged out.");
         dActivity.callLogin();
+
     }
 
     @Override

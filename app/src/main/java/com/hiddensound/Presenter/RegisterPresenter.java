@@ -52,12 +52,22 @@ public class RegisterPresenter implements RegisterPresenterInterface {
                         callDecoder();
                     }
                 }
-                // paired[0] = true;
             }
         });
     }
 
     private void callDecoder(){
         activity.callDecoder(hiddenModel);
+        activity.finishRegisterActivity();
+
+    }
+
+    @Override
+    public void signOut() {
+        TokenHelperInterface temp = new TokenHelper(activity.getContext());
+        temp.deleteTokenInfo();
+        activity.setToast("You have been successfully logged out.");
+        activity.callLogin();
+        activity.finishRegisterActivity();
     }
 }

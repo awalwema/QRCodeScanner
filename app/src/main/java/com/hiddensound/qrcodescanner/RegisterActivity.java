@@ -1,6 +1,7 @@
 package com.hiddensound.qrcodescanner;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -9,6 +10,9 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -29,11 +33,14 @@ public class RegisterActivity extends AppCompatActivity implements RegisterInter
     private RegisterPresenterInterface registerPresenter;
     private HiddenModel hiddenModel;
     private static final int REQUEST_CAMERA = 0;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         localModel = new ModelController();
+        toolbar = (Toolbar) findViewById(R.id.tool_bar);
+        setSupportActionBar(toolbar);
 
         Bundle bundle = this.getIntent().getExtras();
         if (bundle != null) {
@@ -47,8 +54,6 @@ public class RegisterActivity extends AppCompatActivity implements RegisterInter
                 setContentView(R.layout.content_register);
             }
         }
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
         hiddenModel = localModel.create();
         registerPresenter = new RegisterPresenter(hiddenModel, this);
@@ -88,6 +93,12 @@ public class RegisterActivity extends AppCompatActivity implements RegisterInter
         startActivity(intent);
     }
 
+    @Override
+    public void callLogin() {
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+    }
+
     public void requestCameraPermission() {
         if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA) || ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)) {
             Log.d("permissions",
@@ -118,10 +129,42 @@ public class RegisterActivity extends AppCompatActivity implements RegisterInter
                 } else {
                     // Permission Denied
                     this.setToast("CAMERA Access Denied");
+                    super.onBackPressed();
                 }
                 break;
             default:
                 super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
+    }
+
+    @Override
+    public Context getContext() {
+        return this;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        switch (item.getItemId()){
+            case R.id.item_logout:
+                registerPresenter.signOut();
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+    }
+
+    @Override
+    public void finishRegisterActivity()
+    {
+        finish();
     }
 }

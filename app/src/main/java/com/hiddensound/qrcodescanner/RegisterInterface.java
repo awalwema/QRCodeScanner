@@ -1,5 +1,7 @@
 package com.hiddensound.qrcodescanner;
 
+import android.content.Context;
+
 import com.hiddensound.model.HiddenModel;
 
 /**
@@ -13,4 +15,7 @@ public interface RegisterInterface {
     boolean canAccessCamera();
     boolean hasPermission(String perm);
     void requestCameraPermission();
+    Context getContext();
+    void callLogin();
+    void finishRegisterActivity();
 }

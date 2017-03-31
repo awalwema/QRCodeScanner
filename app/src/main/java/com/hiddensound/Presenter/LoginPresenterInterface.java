@@ -14,6 +14,5 @@ public interface LoginPresenterInterface {
     void checkTokenValid();
     void checkPhonePair(Callback<Integer> integer);
     void registerDevice(HiddenModel hiddenModel);
-    //void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults);
 
 }
