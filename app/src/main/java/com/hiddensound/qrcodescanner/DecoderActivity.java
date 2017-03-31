@@ -3,11 +3,9 @@ package com.hiddensound.qrcodescanner;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.PointF;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -33,8 +31,6 @@ public class DecoderActivity extends AppCompatActivity implements QRCodeReaderVi
     private TextView bottomSlider;
     private ModelInterface localModel;
     private DecoderPresenterInterface pDecoder;
-    private static final int REQUEST_CAMERA = 0;
-    private Boolean holdTill = false;
     private Toolbar toolbar;
 
     @Override
@@ -172,24 +168,6 @@ public class DecoderActivity extends AppCompatActivity implements QRCodeReaderVi
     public void onAccept(View v) {
         pDecoder.Approve();
         mLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
-    }
-
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        switch (requestCode) {
-            case REQUEST_CAMERA:
-                if(ActivityCompat.checkSelfPermission(this, permissions[0]) == PackageManager.PERMISSION_GRANTED)    {
-                    // Permission Granted
-                    holdTill = false;
-                } else {
-                    // Permission Denied
-                    this.setToast("CAMERA Access Denied");
-                }
-                break;
-            default:
-                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        }
     }
 
     @Override
