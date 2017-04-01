@@ -64,9 +64,15 @@ public class LoginPresenter implements LoginPresenterInterface {
 
                                 if (registerStatus.equalsIgnoreCase("Everything is good")) {
                                     //redirect to decoder activity
-                                    if (!activity.canAccessCamera()) {
+
+                                    if (!activity.canAccessIMEI())
+                                    {
+                                        activity.requestIMEIPermission();
+                                    }
+                                    else if (!activity.canAccessCamera()) {
                                         activity.requestCameraPermission();
-                                    } else {
+                                    }
+                                    if (activity.canAccessIMEI() && activity.canAccessCamera()){
                                         //start decoder activity only if permission is granted
                                         activity.callDecoder(hiddenModel);
                                         activity.finishLoginActivity();

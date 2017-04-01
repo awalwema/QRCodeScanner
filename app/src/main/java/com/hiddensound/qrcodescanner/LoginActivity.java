@@ -5,11 +5,14 @@ package com.hiddensound.qrcodescanner;
  */
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -71,7 +74,7 @@ public class LoginActivity extends AppCompatActivity implements LoginInterface{
         if(!canAccessCamera()){
             requestCameraPermission();
         } else {
-//start only if permission is granted
+            //start only if permission is granted
             startActivity(new Intent(LoginActivity.this, DecoderActivity.class));
         }
     }
@@ -97,6 +100,34 @@ public class LoginActivity extends AppCompatActivity implements LoginInterface{
                 } else {
                     // Permission Denied
                     this.setToast("IMEI Access Denied");
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(
+                            this);
+                    builder.setCancelable(true);
+                    builder.setTitle("Permission to Access Phone's Unique Identifier");
+                    builder.setMessage("This app will not handle anything related to phone calls. In order to uniquely identify" +
+                            " your phone and for you to use this app, the app needs to access your phone's state.");
+
+                    builder.setPositiveButton("Allow Access",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog,
+                                                    int which) {
+                                    dialog.dismiss();
+                                    checkPhoneState(REQUEST_PHONE_STATE);
+                                }
+                            });
+                    builder.setNegativeButton("Cancel and Exit App",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog,
+                                                    int which) {
+                                    dialog.dismiss();
+                                    finish();
+                                }
+                            });
+                    AlertDialog alert = builder.create();
+                    alert.show();
                 }
                 break;
             case REQUEST_CAMERA:
@@ -106,6 +137,7 @@ public class LoginActivity extends AppCompatActivity implements LoginInterface{
                 } else {
                     // Permission Denied
                     this.setToast("CAMERA Access Denied");
+
                 }
                 break;
             default:
@@ -125,6 +157,21 @@ public class LoginActivity extends AppCompatActivity implements LoginInterface{
         } else {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA, Manifest.permission.CAMERA},
                     REQUEST_CAMERA);
+        }
+    }
+
+    @Override
+    public void requestIMEIPermission() {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_PHONE_STATE) || ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)) {
+            Log.d("permissions",
+                    "Displaying camera permission rationale to provide additional context.");
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_PHONE_STATE, Manifest.permission.READ_PHONE_STATE},
+                    REQUEST_CAMERA);
+
+
+        } else {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_PHONE_STATE, Manifest.permission.READ_PHONE_STATE},
+                    REQUEST_PHONE_STATE);
         }
     }
 
@@ -150,9 +197,24 @@ public class LoginActivity extends AppCompatActivity implements LoginInterface{
     }
 
     @Override
+    public boolean canAccessIMEI() {
+        return (hasPermission(Manifest.permission.READ_PHONE_STATE));
+    }
+
+    @Override
     public void finishLoginActivity()
     {
         finish();
+    }
+
+    public void checkPhoneState(int REQUEST_PHONE_STATE) {
+        int hasPhoneStatePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE);
+
+        if (hasPhoneStatePermission != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.READ_PHONE_STATE},
+                    REQUEST_PHONE_STATE);
+        }
     }
 }
 

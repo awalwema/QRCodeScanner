@@ -13,7 +13,9 @@ public interface LoginInterface {
     void hidePB();
     Object getSystemService(String Name);
     boolean canAccessCamera();
+    boolean canAccessIMEI();
     void requestCameraPermission();
+    void requestIMEIPermission();
     void callRegister(HiddenModel hiddenModel, boolean wrongDevice);
     void finishLoginActivity();
 
