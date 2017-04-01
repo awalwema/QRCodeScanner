@@ -45,7 +45,7 @@
             android:name=".DecoderActivity"
             android:label="@string/title_activity_decoder"
             android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

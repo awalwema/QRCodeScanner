@@ -21,4 +21,5 @@
         2. Click the Sync Device button to add your new device \n
     </string>
     <string name="sync_device">Sync Device</string>
+    <string name="logout">Logout</string>
 </resources>

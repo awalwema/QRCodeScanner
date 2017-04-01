@@ -38,6 +38,7 @@ public class DecoderActivity extends AppCompatActivity implements QRCodeReaderVi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_decoder);
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
+        toolbar.setTitle("Hidden Sound");
         setSupportActionBar(toolbar);
 
 

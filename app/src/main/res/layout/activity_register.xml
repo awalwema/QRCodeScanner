@@ -14,10 +14,6 @@
 
 </android.support.design.widget.AppBarLayout>
 
-    <include
-        android:id="@+id/tool_bar"
-        layout="@layout/tool_bar">
-    </include>
 
     <include layout="@layout/content_register" />
 
