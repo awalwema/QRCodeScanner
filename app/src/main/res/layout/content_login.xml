@@ -91,19 +91,19 @@
             android:textColor="@color/colorPrimary"
             android:textSize="20sp"
             android:textStyle="bold" />
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#00000000"
-            android:textColor="#000000"
-            android:textAllCaps="false"
-            android:textStyle="bold"
-            android:textSize="20sp"
-            android:padding="10dp"
-            android:layout_marginTop="10dp"
-            android:id="@+id/buttonFeatures"
-            android:text="@string/Go_to_Features"
-            android:onClick="startFeaturesActivity" />
+        <!--<Button-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:background="#00000000"-->
+            <!--android:textColor="#000000"-->
+            <!--android:textAllCaps="false"-->
+            <!--android:textStyle="bold"-->
+            <!--android:textSize="20sp"-->
+            <!--android:padding="10dp"-->
+            <!--android:layout_marginTop="10dp"-->
+            <!--android:id="@+id/buttonFeatures"-->
+            <!--android:text="@string/Go_to_Features"-->
+            <!--android:onClick="startFeaturesActivity" />-->
 
         <ProgressBar
             android:layout_width="wrap_content"

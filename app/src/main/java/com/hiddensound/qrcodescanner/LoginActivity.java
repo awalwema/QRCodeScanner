@@ -69,15 +69,15 @@ public class LoginActivity extends AppCompatActivity implements LoginInterface{
     public void startWebSignUp(View v) {
         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://dev-hiddensound.azurewebsites.net/register")));
     }
-
-    public void startFeaturesActivity(View v) {
-        if(!canAccessCamera()){
-            requestCameraPermission();
-        } else {
-            //start only if permission is granted
-            startActivity(new Intent(LoginActivity.this, DecoderActivity.class));
-        }
-    }
+    // backdoor for testing purposes
+//    public void startFeaturesActivity(View v) {
+//        if(!canAccessCamera()){
+//            requestCameraPermission();
+//        } else {
+//            //start only if permission is granted
+//            startActivity(new Intent(LoginActivity.this, DecoderActivity.class));
+//        }
+//    }
 
     @Override
     public void callDecoder(HiddenModel hiddenModel) {
