@@ -168,6 +168,7 @@ public class LoginPresenter implements LoginPresenterInterface {
                         } else if (registerStatus.equalsIgnoreCase("You can register device")) {
                             activity.callRegister(hiddenModel, false);
                             activity.finishLoginActivity();
+
                         }
 
 

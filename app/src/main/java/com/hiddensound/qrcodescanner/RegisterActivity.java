@@ -129,7 +129,8 @@ public class RegisterActivity extends AppCompatActivity implements RegisterInter
                 } else {
                     // Permission Denied
                     this.setToast("CAMERA Access Denied");
-                    super.onBackPressed();
+                    callLogin();
+                    finishRegisterActivity();
                 }
                 break;
             default:
