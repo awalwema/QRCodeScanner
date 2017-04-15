@@ -18,5 +18,6 @@ public interface LoginInterface {
     void requestIMEIPermission();
     void callRegister(HiddenModel hiddenModel, boolean wrongDevice);
     void finishLoginActivity();
+    void setLoginContent();
 
 }

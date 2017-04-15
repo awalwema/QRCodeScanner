@@ -35,11 +35,12 @@ public class LoginActivity extends AppCompatActivity implements LoginInterface{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.content_token);
 
-        UserIDView = (EditText) findViewById(R.id.UserID);
-        UserPassView = (EditText) findViewById(R.id.UserPass);
+//        UserIDView = (EditText) findViewById(R.id.UserID);
+//        UserPassView = (EditText) findViewById(R.id.UserPass);
         checkBar = (ProgressBar) findViewById(R.id.pbbar);
+        showPB();
 
         loginPresenter = new LoginPresenter(this, getApplicationContext());
         loginPresenter.checkPhoneState(this, REQUEST_PHONE_STATE);
@@ -215,6 +216,15 @@ public class LoginActivity extends AppCompatActivity implements LoginInterface{
                     new String[]{Manifest.permission.READ_PHONE_STATE},
                     REQUEST_PHONE_STATE);
         }
+    }
+    @Override
+    public void setLoginContent() {
+        hidePB();
+        setContentView(R.layout.content_login);
+
+        UserIDView = (EditText) findViewById(R.id.UserID);
+        UserPassView = (EditText) findViewById(R.id.UserPass);
+        checkBar = (ProgressBar) findViewById(R.id.pbbar);
     }
 }
 

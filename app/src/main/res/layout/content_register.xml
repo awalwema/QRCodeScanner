@@ -18,6 +18,7 @@
         android:orientation="vertical"
         android:padding="10dp"
         android:weightSum="1"
+        android:id="@+id/linearLayout"
         android:layout_below="@+id/imageView1"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true">
@@ -51,10 +52,12 @@
         android:id="@+id/imageView1"
         android:layout_width="381dp"
         android:layout_height="180dp"
+        android:layout_marginTop="50dp"
 
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
+
         android:layout_weight="0.42"
-        android:src="@drawable/connect" />
+        android:src="@drawable/connect"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 </RelativeLayout>

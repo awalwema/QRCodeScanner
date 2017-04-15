@@ -183,6 +183,7 @@ public class LoginPresenter implements LoginPresenterInterface {
         {
             //delete everything stored in shared preferences.
             tokenHelper.deleteTokenInfo();
+            activity.setLoginContent();
         }
 
     }

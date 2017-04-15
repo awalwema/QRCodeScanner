@@ -14,12 +14,13 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/imageView1"
         android:orientation="vertical"
         android:padding="10dp"
-        android:weightSum="1">
+        android:weightSum="1"
+        android:layout_marginTop="11dp"
+        android:layout_below="@+id/imageView1"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
         <TextView
             android:id="@+id/textView"
@@ -65,8 +66,9 @@
         android:id="@+id/imageView1"
         android:layout_width="381dp"
         android:layout_height="160dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
         android:contentDescription=""
-        android:src="@drawable/connect" />
+        android:src="@drawable/connect"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 </RelativeLayout>
