@@ -99,7 +99,7 @@ public class LoginActivity extends AppCompatActivity implements LoginInterface{
 
                 } else {
                     // Permission Denied
-                    this.setToast("IMEI Access Denied");
+                    this.setToast("Access Denied");
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(
                             this);
