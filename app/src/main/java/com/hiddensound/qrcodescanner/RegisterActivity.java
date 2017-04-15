@@ -126,6 +126,7 @@ public class RegisterActivity extends AppCompatActivity implements RegisterInter
                 if(ActivityCompat.checkSelfPermission(this, permissions[0]) == PackageManager.PERMISSION_GRANTED)    {
                     // Permission Granted
                     startActivity(new Intent(this, DecoderActivity.class));
+                    finishRegisterActivity();
                 } else {
                     // Permission Denied
                     this.setToast("CAMERA Access Denied");
